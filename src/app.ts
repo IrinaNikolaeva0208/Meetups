@@ -1,5 +1,6 @@
 import express from "express";
 import * as dotenv from "dotenv";
+import meetupsRouter from "./routers/meetups.router";
 
 dotenv.config();
 
