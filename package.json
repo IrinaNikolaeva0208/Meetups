@@ -1,7 +1,6 @@
 {
   "name": "meetups",
   "version": "1.0.0",
-  "type": "module",
   "main": "index.js",
   "repository": "https://github.com/IrinaNikolaeva0208/Meetups.git",
   "author": "Irina Nikolaeva <irina2002.nikolaeva@yandex.ru>",
