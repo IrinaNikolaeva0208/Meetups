@@ -8,4 +8,6 @@ const PORT = process.env.PORT || 4000;
 
 const meetupsApp = express();
 
+meetupsApp.use("/meetups", meetupsRouter);
+
 meetupsApp.listen(PORT, () => console.log("Server started on port " + PORT));
