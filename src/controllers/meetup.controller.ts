@@ -1,32 +1,34 @@
 import { Request, Response } from "express";
-import { Database } from "../database/db";
-import { randomUUID } from "crypto";
+import { database } from "../database/prisma.client";
 
 class MeetupController {
   async getAll(req: Request, res: Response) {
-    res.status(200).json(Database);
+    const allMeetups = await database.meetup.findMany();
+    res.status(200).json(allMeetups);
   }
 
   async getById(req: Request, res: Response) {
-    const meetupById = Database.find((item) => item.id == req.params.id);
+    const meetupById = await database.meetup.findUnique({
+      where: { id: req.params.id },
+    });
     res.status(200).json(meetupById);
   }
 
   async create(req: Request, res: Response) {
-    const newMeetup = { ...req.body, id: randomUUID() };
-    Database.push(newMeetup);
+    const newMeetup = await database.meetup.create({ data: { ...req.body } });
     res.status(201).json(newMeetup);
   }
 
   async update(req: Request, res: Response) {
-    const meetupIndex = Database.findIndex((item) => item.id == req.params.id);
-    Database[meetupIndex] = { ...Database[meetupIndex], ...req.body };
-    res.status(200).json(Database[meetupIndex]);
+    const updatedMeetup = await database.meetup.update({
+      where: { id: req.params.id },
+      data: { ...req.body },
+    });
+    res.status(200).json(updatedMeetup);
   }
 
   async delete(req: Request, res: Response) {
-    const meetupIndex = Database.findIndex((item) => item.id == req.params.id);
-    Database.splice(meetupIndex, 1);
+    await database.meetup.delete({ where: { id: req.params.id } });
     res.sendStatus(204);
   }
 }

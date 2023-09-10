@@ -4,7 +4,7 @@ CREATE TABLE "Meetup" (
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "tags" TEXT[],
-    "time" TIMESTAMP(3) NOT NULL,
+    "time" TEXT NOT NULL,
     "place" TEXT NOT NULL,
 
     CONSTRAINT "Meetup_pkey" PRIMARY KEY ("id")

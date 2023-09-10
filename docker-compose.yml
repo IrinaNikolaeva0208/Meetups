@@ -16,7 +16,7 @@ services:
     networks:
       - app-network
     ports:
-      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+      - "${DB_PORT}:${POSTGRES_PORT}"
     env_file:
       - .env
     volumes:

@@ -15,6 +15,6 @@ model Meetup {
   name        String
   description String
   tags        String[]
-  time        DateTime
+  time        String
   place       String
 }
