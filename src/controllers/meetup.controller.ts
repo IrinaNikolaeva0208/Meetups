@@ -11,7 +11,11 @@ class MeetupController {
     const meetupById = await database.meetup.findUnique({
       where: { id: req.params.id },
     });
-    res.status(200).json(meetupById);
+    if (meetupById) {
+      res.status(200).json(meetupById);
+    } else {
+      res.status(404).json({ message: "Not Found" });
+    }
   }
 
   async create(req: Request, res: Response) {
@@ -24,12 +28,22 @@ class MeetupController {
       where: { id: req.params.id },
       data: { ...req.body },
     });
-    res.status(200).json(updatedMeetup);
+    if (updatedMeetup) {
+      res.status(200).json(updatedMeetup);
+    } else {
+      res.status(404).json({ message: "Not Found" });
+    }
   }
 
   async delete(req: Request, res: Response) {
-    await database.meetup.delete({ where: { id: req.params.id } });
-    res.sendStatus(204);
+    const deletedMeetup = await database.meetup.delete({
+      where: { id: req.params.id },
+    });
+    if (deletedMeetup) {
+      res.sendStatus(204).json({ message: "Successfully deleted" });
+    } else {
+      res.status(404).json({ message: "Not Found" });
+    }
   }
 }
 
