@@ -11,7 +11,7 @@ export function validateRequestProperty(
       next();
     } else {
       const { details } = error;
-      res.status(400).json({ error: details });
+      res.status(400).json({ message: "Bad Request", error: details });
     }
   };
 }
