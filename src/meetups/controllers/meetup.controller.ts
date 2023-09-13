@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { database } from "../database/prisma.client";
+import { database } from "../../database/prisma.client";
 
 class MeetupController {
   async getAll(req: Request, res: Response) {

@@ -1,9 +1,9 @@
 import { Router } from "express";
 import MeetupController from "../controllers/meetup.controller";
-import { validateRequestProperty } from "../validation/middleware/validateRequestProperty";
-import { CreateMeetupSchema } from "../validation/schemas/createMeetup.schema";
-import { UpdateMeetupSchema } from "../validation/schemas/updateMeetup.schema";
-import { MeetupIdSchema } from "../validation/schemas/meetupId.schema";
+import { validateRequestProperty } from "../../validation/middleware/validateRequestProperty";
+import { CreateMeetupSchema } from "../../validation/schemas/createMeetup.schema";
+import { UpdateMeetupSchema } from "../../validation/schemas/updateMeetup.schema";
+import { MeetupIdSchema } from "../../validation/schemas/meetupId.schema";
 
 const meetupsRouter = Router();
 

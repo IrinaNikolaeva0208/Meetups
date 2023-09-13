@@ -1,6 +1,6 @@
 import express from "express";
 import * as dotenv from "dotenv";
-import meetupsRouter from "./routers/meetups.router";
+import meetupsRouter from "./meetups/routers/meetups.router";
 import { sendInvalidRouteResponse } from "./validation/middleware/sendInvalidRouteResponse";
 import { validateJSON } from "./validation/middleware/validateJSON";
 
