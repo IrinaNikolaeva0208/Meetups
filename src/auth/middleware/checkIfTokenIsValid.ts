@@ -6,9 +6,13 @@ export default function checkIfTokenIsValid(
   res: Response,
   next: NextFunction
 ) {
-  passport.authenticate("jwt", { session: false }, (err, userPayload, info) => {
-    if (err || !userPayload) {
-      res.status(404).json({ message: info.message });
-    } else next();
-  })(req, res, next);
+  passport.authenticate(
+    "jwt-access",
+    { session: false },
+    (err, userPayload, info) => {
+      if (err || !userPayload) {
+        res.status(401).json({ message: info.message });
+      } else next();
+    }
+  )(req, res, next);
 }

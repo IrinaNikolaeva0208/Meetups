@@ -7,6 +7,7 @@ import sendAuthenticationResponse from "../middleware/sendAuthenticationResponse
 const authRouter = Router();
 
 authRouter.post("/signup", validateRequestProperty("body", UserSchema), signUp);
-authRouter.post("/login", sendAuthenticationResponse);
+authRouter.post("/login", sendAuthenticationResponse("local"));
+authRouter.post("/refresh", sendAuthenticationResponse("jwt-refresh"));
 
 export default authRouter;
