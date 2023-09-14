@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import * as jwt from "jsonwebtoken";
-import passport from "../strategies/local.strategy";
+import passport from "../passport/passport";
 
 export default function sendAuthenticationResponse(
   req: Request,
@@ -18,7 +18,9 @@ export default function sendAuthenticationResponse(
         res.status(401).json({ message: info.message });
       }
 
-      const accessToken = jwt.sign(userPayload, process.env.JWT_SECRET_KEY);
+      const accessToken = jwt.sign(userPayload, process.env.JWT_SECRET_KEY, {
+        expiresIn: process.env.JWT_TOKEN_EXPIRES_IN,
+      });
       res.status(200).json({ accessToken });
     }
   )(req, res, next);
