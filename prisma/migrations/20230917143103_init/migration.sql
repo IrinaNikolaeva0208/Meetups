@@ -1,3 +1,6 @@
+-- CreateEnum
+CREATE TYPE "Role" AS ENUM ('USER', 'MEETUP_ORGANIZER');
+
 -- CreateTable
 CREATE TABLE "Meetup" (
     "id" TEXT NOT NULL,
@@ -15,6 +18,7 @@ CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "login" TEXT NOT NULL,
     "password" TEXT NOT NULL,
+    "roles" "Role"[],
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );

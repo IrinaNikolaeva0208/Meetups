@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { database } from "../../database/prisma.client";
 import * as bcrypt from "bcrypt";
+import { Roles } from "../enums/roles";
 
 export default async function signUp(req: Request, res: Response) {
   const sameUser = await database.user.findUnique({
@@ -11,6 +12,7 @@ export default async function signUp(req: Request, res: Response) {
     const { password, ...newUserPayload } = await database.user.create({
       data: {
         ...req.body,
+        roles: [Roles.user],
         password: await bcrypt.hash(req.body.password, +process.env.CRYPT_SALT),
       },
     });
