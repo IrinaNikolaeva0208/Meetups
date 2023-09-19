@@ -6,13 +6,19 @@ import { UpdateMeetupSchema } from "../../validation/schemas/updateMeetup.schema
 import { MeetupIdSchema } from "../../validation/schemas/meetupId.schema";
 import { checkRoles } from "../../auth/middleware/checkRoles";
 import { Roles } from "../../auth/enums/roles";
+import { PaginationQueryParamsSchema } from "../../validation/schemas/paginationQueryParams.schema";
+import { paginateResults } from "../middleware/paginateResults";
 
 const meetupsRouter = Router();
 
-meetupsRouter.get("/", MeetupController.getAll);
+meetupsRouter.get(
+  "/",
+  validateRequestProperty("query", PaginationQueryParamsSchema),
+  paginateResults(MeetupController.getAll, MeetupController.getAllLength)
+);
 meetupsRouter.post(
   "/",
-  checkRoles([Roles.meetup_organizer]),
+  //checkRoles([Roles.meetup_organizer]),
   validateRequestProperty("body", CreateMeetupSchema),
   MeetupController.create
 );

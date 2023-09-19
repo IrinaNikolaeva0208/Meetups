@@ -15,7 +15,7 @@ model Meetup {
   name        String
   description String
   tags        String[]
-  time        String
+  time        DateTime @default(now())
   place       String
 }
 
