@@ -12,15 +12,26 @@ class MeetupController {
     return allMeetups;
   }
 
-  async getById(req: Request, res: Response) {
-    const meetupById = await database.meetup.findUnique({
-      where: { id: req.params.id },
+  async signUpForMeetup(meetupId: string, userId: string) {
+    const requiredMeetup = await this.getById(meetupId);
+    if (!requiredMeetup) return null;
+    if (requiredMeetup.users.includes({ userId })) return requiredMeetup;
+    const meetupSignedUpFor = await database.meetup.update({
+      where: { id: meetupId },
+      data: {
+        users: { create: { user: { connect: { id: userId } } } },
+      },
+      include: { users: { select: { userId: true } } },
     });
-    if (meetupById) {
-      res.status(200).json(meetupById);
-    } else {
-      res.status(404).json({ message: "Not Found" });
-    }
+    return meetupSignedUpFor;
+  }
+
+  async getById(id: string) {
+    const meetupById = await database.meetup.findUnique({
+      where: { id },
+      include: { users: { select: { userId: true } } },
+    });
+    return meetupById;
   }
 
   async create(req: Request, res: Response) {

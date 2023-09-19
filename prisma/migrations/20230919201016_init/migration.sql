@@ -23,5 +23,19 @@ CREATE TABLE "User" (
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "MeetupUser" (
+    "userId" TEXT NOT NULL,
+    "meetupId" TEXT NOT NULL,
+
+    CONSTRAINT "MeetupUser_pkey" PRIMARY KEY ("userId","meetupId")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_login_key" ON "User"("login");
+
+-- AddForeignKey
+ALTER TABLE "MeetupUser" ADD CONSTRAINT "MeetupUser_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "MeetupUser" ADD CONSTRAINT "MeetupUser_meetupId_fkey" FOREIGN KEY ("meetupId") REFERENCES "Meetup"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

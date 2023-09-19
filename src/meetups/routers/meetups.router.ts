@@ -8,6 +8,7 @@ import { checkRoles } from "../../auth/middleware/checkRoles";
 import { Roles } from "../../auth/enums/roles";
 import { PaginationQueryParamsSchema } from "../../validation/schemas/paginationQueryParams.schema";
 import { paginateResults } from "../middleware/paginateResults";
+import { signUpForMeetupByJwt } from "../middleware/signUpForMeetupByJwt";
 
 const meetupsRouter = Router();
 
@@ -39,6 +40,11 @@ meetupsRouter.delete(
   checkRoles([Roles.meetup_organizer]),
   validateRequestProperty("params", MeetupIdSchema),
   MeetupController.delete
+);
+meetupsRouter.post(
+  "/:id",
+  validateRequestProperty("params", MeetupIdSchema),
+  signUpForMeetupByJwt
 );
 
 export default meetupsRouter;
