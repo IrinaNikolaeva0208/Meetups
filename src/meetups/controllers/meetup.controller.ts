@@ -2,9 +2,14 @@ import { Request, Response } from "express";
 import { database } from "../../database/prisma.client";
 
 class MeetupController {
-  async getAll(req: Request, res: Response) {
-    const allMeetups = await database.meetup.findMany();
-    res.status(200).json(allMeetups);
+  async getAll(options: any) {
+    const allMeetups = await database.meetup.findMany(options);
+    return allMeetups;
+  }
+
+  async getAllLength(filter: any) {
+    const allMeetups = await database.meetup.count(filter);
+    return allMeetups;
   }
 
   async getById(req: Request, res: Response) {
@@ -19,7 +24,9 @@ class MeetupController {
   }
 
   async create(req: Request, res: Response) {
-    const newMeetup = await database.meetup.create({ data: { ...req.body } });
+    const newMeetup = await database.meetup.create({
+      data: { ...req.body, time: new Date(req.body.time).toISOString() },
+    });
     res.status(201).json(newMeetup);
   }
 
