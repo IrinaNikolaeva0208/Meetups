@@ -44,7 +44,9 @@ class MeetupController {
   async update(req: Request, res: Response) {
     const updatedMeetup = await database.meetup.update({
       where: { id: req.params.id },
-      data: { ...req.body },
+      data: req.body.time
+        ? { ...req.body, time: new Date(req.body.time).toISOString() }
+        : { ...req.body },
     });
     if (updatedMeetup) {
       res.status(200).json(updatedMeetup);

@@ -18,7 +18,7 @@ CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "login" TEXT NOT NULL,
     "password" TEXT NOT NULL,
-    "roles" "Role"[],
+    "role" "Role" NOT NULL,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
