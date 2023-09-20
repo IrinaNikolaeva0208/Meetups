@@ -12,7 +12,6 @@ export default async function signUp(req: Request, res: Response) {
     const { password, ...newUserPayload } = await database.user.create({
       data: {
         ...req.body,
-        roles: [Roles.user],
         password: await bcrypt.hash(req.body.password, +process.env.CRYPT_SALT),
       },
     });

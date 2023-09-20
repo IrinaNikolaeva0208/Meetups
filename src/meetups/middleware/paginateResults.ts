@@ -8,7 +8,7 @@ export function paginateResults(
   return async function (req: Request, res: Response) {
     const paginationOptions = formPaginationOptions(req.query);
 
-    let results = await getRequestResults(paginationOptions);
+    const results = await getRequestResults(paginationOptions);
 
     const paginationResponse = {
       data: results,
