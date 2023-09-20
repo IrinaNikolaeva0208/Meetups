@@ -1,4 +1,3 @@
-import { Request, Response } from "express";
 import { database } from "../../database/prisma.client";
 
 class MeetupController {
@@ -13,9 +12,10 @@ class MeetupController {
   }
 
   async signUpForMeetup(meetupId: string, userId: string) {
-    const requiredMeetup = await this.getById(meetupId);
+    const requiredMeetup = await this.getById({ id: meetupId });
     if (!requiredMeetup) return null;
-    if (requiredMeetup.users.includes({ userId })) return requiredMeetup;
+    if (requiredMeetup.users.find((item) => item.userId == userId))
+      return requiredMeetup;
     const meetupSignedUpFor = await database.meetup.update({
       where: { id: meetupId },
       data: {
@@ -26,44 +26,42 @@ class MeetupController {
     return meetupSignedUpFor;
   }
 
-  async getById(id: string) {
+  async getById(requestOptions: { id?: string; body?: object }) {
     const meetupById = await database.meetup.findUnique({
-      where: { id },
+      where: { id: requestOptions.id },
       include: { users: { select: { userId: true } } },
     });
     return meetupById;
   }
 
-  async create(req: Request, res: Response) {
+  async create(requestOptions: { id?: string; body?: any }) {
     const newMeetup = await database.meetup.create({
-      data: { ...req.body, time: new Date(req.body.time).toISOString() },
+      data: {
+        ...requestOptions.body,
+        time: new Date(requestOptions.body.time).toISOString(),
+      },
     });
-    res.status(201).json(newMeetup);
+    return newMeetup;
   }
 
-  async update(req: Request, res: Response) {
+  async update(requestOptions: { id?: string; body?: any }) {
     const updatedMeetup = await database.meetup.update({
-      where: { id: req.params.id },
-      data: req.body.time
-        ? { ...req.body, time: new Date(req.body.time).toISOString() }
-        : { ...req.body },
+      where: { id: requestOptions.id },
+      data: requestOptions.body.time
+        ? {
+            ...requestOptions.body,
+            time: new Date(requestOptions.body.time).toISOString(),
+          }
+        : { ...requestOptions.body },
     });
-    if (updatedMeetup) {
-      res.status(200).json(updatedMeetup);
-    } else {
-      res.status(404).json({ message: "Not Found" });
-    }
+    return updatedMeetup;
   }
 
-  async delete(req: Request, res: Response) {
+  async delete(requestOptions: { id?: string; body?: any }) {
     const deletedMeetup = await database.meetup.delete({
-      where: { id: req.params.id },
+      where: { id: requestOptions.id },
     });
-    if (deletedMeetup) {
-      res.sendStatus(204).json({ message: "Successfully deleted" });
-    } else {
-      res.status(404).json({ message: "Not Found" });
-    }
+    if (deletedMeetup) return { message: "Successfully deleted" };
   }
 }
 

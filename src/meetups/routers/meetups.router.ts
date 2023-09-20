@@ -9,6 +9,7 @@ import { Roles } from "../../auth/enums/roles";
 import { PaginationQueryParamsSchema } from "../../validation/schemas/paginationQueryParams.schema";
 import { paginateResults } from "../middleware/paginateResults";
 import { signUpForMeetupByJwt } from "../middleware/signUpForMeetupByJwt";
+import { sendAppropriateResponse } from "../middleware/sendAppropriateResponse";
 
 const meetupsRouter = Router();
 
@@ -21,25 +22,25 @@ meetupsRouter.post(
   "/",
   checkRole(Roles.meetup_organizer),
   validateRequestProperty("body", CreateMeetupSchema),
-  MeetupController.create
+  sendAppropriateResponse(MeetupController.create)
 );
 meetupsRouter.get(
   "/:id",
   validateRequestProperty("params", MeetupIdSchema),
-  MeetupController.getById
+  sendAppropriateResponse(MeetupController.getById)
 );
 meetupsRouter.patch(
   "/:id",
   checkRole(Roles.meetup_organizer),
   validateRequestProperty("params", MeetupIdSchema),
   validateRequestProperty("body", UpdateMeetupSchema),
-  MeetupController.update
+  sendAppropriateResponse(MeetupController.update)
 );
 meetupsRouter.delete(
   "/:id",
   checkRole(Roles.meetup_organizer),
   validateRequestProperty("params", MeetupIdSchema),
-  MeetupController.delete
+  sendAppropriateResponse(MeetupController.delete)
 );
 meetupsRouter.post(
   "/signup/:id",
