@@ -1,12 +1,16 @@
 import { database } from "../../database/prisma.client";
+import { CreateMeetupBody } from "../interfaces/createMeetupRequestOptions";
+import { PaginationFilter } from "../interfaces/paginationFilter";
+import { paginationOptions } from "../interfaces/paginationOptions";
+import { RequestOpions } from "../interfaces/requestOptions";
 
 class MeetupController {
-  async getAll(options: any) {
+  async getAll(options: paginationOptions) {
     const allMeetups = await database.meetup.findMany(options);
     return allMeetups;
   }
 
-  async getAllLength(filter: any) {
+  async getAllLength(filter: PaginationFilter) {
     const allMeetups = await database.meetup.count(filter);
     return allMeetups;
   }
@@ -16,6 +20,7 @@ class MeetupController {
     if (!requiredMeetup) return null;
     if (requiredMeetup.users.find((item) => item.userId == userId))
       return requiredMeetup;
+
     const meetupSignedUpFor = await database.meetup.update({
       where: { id: meetupId },
       data: {
@@ -26,25 +31,7 @@ class MeetupController {
     return meetupSignedUpFor;
   }
 
-  async getById(requestOptions: { id?: string; body?: object }) {
-    const meetupById = await database.meetup.findUnique({
-      where: { id: requestOptions.id },
-      include: { users: { select: { userId: true } } },
-    });
-    return meetupById;
-  }
-
-  async create(requestOptions: { id?: string; body?: any }) {
-    const newMeetup = await database.meetup.create({
-      data: {
-        ...requestOptions.body,
-        time: new Date(requestOptions.body.time).toISOString(),
-      },
-    });
-    return newMeetup;
-  }
-
-  async update(requestOptions: { id?: string; body?: any }) {
+  async update(requestOptions: RequestOpions) {
     const updatedMeetup = await database.meetup.update({
       where: { id: requestOptions.id },
       data: requestOptions.body.time
@@ -57,7 +44,25 @@ class MeetupController {
     return updatedMeetup;
   }
 
-  async delete(requestOptions: { id?: string; body?: any }) {
+  async getById(requestOptions: RequestOpions) {
+    const meetupById = await database.meetup.findUnique({
+      where: { id: requestOptions.id },
+      include: { users: { select: { userId: true } } },
+    });
+    return meetupById;
+  }
+
+  async create(requestBody: CreateMeetupBody) {
+    const newMeetup = await database.meetup.create({
+      data: {
+        ...requestBody,
+        time: new Date(requestBody.time).toISOString(),
+      },
+    });
+    return newMeetup;
+  }
+
+  async delete(requestOptions: RequestOpions) {
     const deletedMeetup = await database.meetup.delete({
       where: { id: requestOptions.id },
     });

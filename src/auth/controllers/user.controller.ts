@@ -1,5 +1,6 @@
 import { database } from "../../database/prisma.client";
 import * as bcrypt from "bcrypt";
+import { CreateUserBody } from "../interfaces/CreateUserBody";
 
 class UserController {
   async getById(id: string) {
@@ -12,7 +13,7 @@ class UserController {
     return userByLogin;
   }
 
-  async create(body: any) {
+  async create(body: CreateUserBody) {
     const createdUser = await database.user.create({
       data: {
         ...body,

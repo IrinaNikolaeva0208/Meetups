@@ -5,7 +5,10 @@ export function paginateResults(
   getRequestResults: Function,
   getResultsLength: Function
 ) {
-  return async function (req: Request, res: Response) {
+  return async function (
+    req: Request<{}, {}, {}, Record<string, string>>,
+    res: Response
+  ) {
     const paginationOptions = formPaginationOptions(req.query);
 
     const results = await getRequestResults(paginationOptions);
