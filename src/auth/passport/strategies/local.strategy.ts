@@ -1,4 +1,4 @@
-import { database } from "../../../database/prisma.client";
+import userController from "../../controllers/user.controller";
 import { Strategy as LocalStrategy } from "passport-local";
 import * as bcrypt from "bcrypt";
 
@@ -8,9 +8,7 @@ export default new LocalStrategy(
   },
   async (login, enteredPassword, done) => {
     try {
-      const userWithSameLogin = await database.user.findUnique({
-        where: { login },
-      });
+      const userWithSameLogin = await userController.getByLogin(login);
 
       if (userWithSameLogin) {
         const passwordIsCorrect = await bcrypt.compare(

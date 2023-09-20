@@ -1,5 +1,5 @@
 import { Strategy, ExtractJwt } from "passport-jwt";
-import { database } from "../../../database/prisma.client";
+import userController from "../../controllers/user.controller";
 
 export default function createJwtStrategy(secretOrKey: string) {
   const jwtOptions = {
@@ -8,9 +8,7 @@ export default function createJwtStrategy(secretOrKey: string) {
   };
 
   return new Strategy(jwtOptions, async (jwtPayload, done) => {
-    const userWithAcceptedJwt = await database.user.findUnique({
-      where: { id: jwtPayload.id },
-    });
+    const userWithAcceptedJwt = await userController.getById(jwtPayload.id);
 
     if (userWithAcceptedJwt) {
       done(null, userWithAcceptedJwt);
