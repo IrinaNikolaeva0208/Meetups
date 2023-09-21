@@ -6,7 +6,7 @@
   "author": "Irina Nikolaeva <irina2002.nikolaeva@yandex.ru>",
   "license": "MIT",
   "scripts": {
-    "start": "yarn run build && yarn run ./dist/src/app.js",
+    "start": "yarn run build && node ./dist/app.js",
     "start:migrate": "prisma migrate deploy && yarn run start",
     "build": "npx tsc",
     "lint": "eslint src/**/*.ts --fix",
