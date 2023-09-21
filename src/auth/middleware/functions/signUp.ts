@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import userController from "../controllers/user.controller";
-import { LOGIN_IN_USE_RESPONSE } from "../../responses/responses";
+import userController from "../classes/userDatabaseController";
+import { LOGIN_IN_USE_RESPONSE } from "../../../responses/responses";
 
-export default async function signUp(req: Request, res: Response) {
+export async function signUp(req: Request, res: Response) {
   const sameUser = await userController.getByLogin(req.body.login);
   if (sameUser)
     res.status(LOGIN_IN_USE_RESPONSE.statusCode).json(LOGIN_IN_USE_RESPONSE);

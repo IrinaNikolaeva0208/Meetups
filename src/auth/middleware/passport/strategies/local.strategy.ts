@@ -1,7 +1,7 @@
-import userController from "../../controllers/user.controller";
+import UserDatabaseController from "../../classes/userDatabaseController";
 import { IVerifyOptions, Strategy as LocalStrategy } from "passport-local";
 import * as bcrypt from "bcrypt";
-import { WRONG_CREDENTIALS_RESPONSE } from "../../../responses/responses";
+import { WRONG_CREDENTIALS_RESPONSE } from "../../../../responses/responses";
 
 export default new LocalStrategy(
   {
@@ -9,7 +9,7 @@ export default new LocalStrategy(
   },
   async (login, enteredPassword, done) => {
     try {
-      const userWithSameLogin = await userController.getByLogin(login);
+      const userWithSameLogin = await UserDatabaseController.getByLogin(login);
 
       if (userWithSameLogin) {
         const passwordIsCorrect = await bcrypt.compare(

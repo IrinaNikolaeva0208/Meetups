@@ -4,7 +4,7 @@ import meetupsRouter from "./meetups/routers/meetups.router";
 import { sendInvalidRouteResponse } from "./validation/middleware/sendInvalidRouteResponse";
 import { validateJSON } from "./validation/middleware/validateJSON";
 import authRouter from "./auth/routers/auth.router";
-import checkIfTokenIsValid from "./auth/middleware/checkIfTokenIsValid";
+import checkIfTokenIsValid from "./auth/middleware/functions/checkIfTokenIsValid";
 
 dotenv.config();
 

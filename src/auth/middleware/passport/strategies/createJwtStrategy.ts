@@ -1,6 +1,6 @@
 import { Strategy, ExtractJwt } from "passport-jwt";
-import userController from "../../controllers/user.controller";
-import { INVALID_TOKEN_RESPONSE } from "../../../responses/responses";
+import UserDatabaseController from "../../classes/userDatabaseController";
+import { INVALID_TOKEN_RESPONSE } from "../../../../responses/responses";
 
 export default function JwtStrategy(secretOrKey: string) {
   const jwtOptions = {
@@ -9,7 +9,9 @@ export default function JwtStrategy(secretOrKey: string) {
   };
 
   return new Strategy(jwtOptions, async (jwtPayload, done) => {
-    const userWithAcceptedJwt = await userController.getById(jwtPayload.id);
+    const userWithAcceptedJwt = await UserDatabaseController.getById(
+      jwtPayload.id
+    );
 
     if (userWithAcceptedJwt) {
       done(null, userWithAcceptedJwt);

@@ -4,7 +4,7 @@ import { validateRequestProperty } from "../../validation/middleware/validateReq
 import { CreateMeetupSchema } from "../../validation/schemas/createMeetup.schema";
 import { UpdateMeetupSchema } from "../../validation/schemas/updateMeetup.schema";
 import { MeetupIdSchema } from "../../validation/schemas/meetupId.schema";
-import { checkRole } from "../../auth/middleware/checkRoles";
+import { checkRole } from "../../auth/middleware/functions/checkRole";
 import { Roles } from "../../auth/enums/roles";
 import { PaginationQueryParamsSchema } from "../../validation/schemas/paginationQueryParams.schema";
 import { paginateResults } from "../middleware/functions/paginateResults";

@@ -1,8 +1,8 @@
-import { database } from "../../database/prisma.client";
+import { database } from "../../../database/prisma.client";
 import * as bcrypt from "bcrypt";
-import { CreateUserBody } from "../interfaces/CreateUserBody";
+import { CreateUserBody } from "../../interfaces/CreateUserBody";
 
-class UserController {
+class UserDatabaseController {
   async getById(id: string) {
     const userById = await database.user.findUnique({ where: { id } });
     return userById;
@@ -24,4 +24,4 @@ class UserController {
   }
 }
 
-export default new UserController();
+export default new UserDatabaseController();

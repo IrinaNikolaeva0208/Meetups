@@ -1,26 +1,22 @@
 import { NextFunction, Request, Response } from "express";
 import * as jwt from "jsonwebtoken";
 import passport from "../passport/passport";
-import { createResponse } from "../../responses/createResponse";
+import { createResponse } from "../../../responses/createResponse";
 
-export default function sendTokens(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export function authenticate(req: Request, res: Response, next: NextFunction) {
   passport.authenticate(
     "local",
     { session: false },
-    (err, userPayload, info) => {
-      if (err) {
-        next(err);
-      } else if (!userPayload) {
+    (error, userPayload, info) => {
+      if (error) next(error);
+      else if (!userPayload) {
         const response = createResponse(401, info.message);
         res.status(response.statusCode).json(response);
       } else {
         const accessToken = jwt.sign(userPayload, process.env.JWT_SECRET_KEY, {
           expiresIn: process.env.JWT_TOKEN_EXPIRES_IN,
         });
+
         const refreshToken = jwt.sign(
           userPayload,
           process.env.REFRESH_SECRET_KEY,
@@ -28,6 +24,7 @@ export default function sendTokens(
             expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN,
           }
         );
+
         res.status(200).json({ accessToken, refreshToken });
       }
     }
