@@ -1,5 +1,5 @@
 import { Router } from "express";
-import MeetupController from "../controllers/meetup.controller";
+import MeetupController from "../middleware/classes/meetupDatabaseController";
 import { validateRequestProperty } from "../../validation/middleware/validateRequestProperty";
 import { CreateMeetupSchema } from "../../validation/schemas/createMeetup.schema";
 import { UpdateMeetupSchema } from "../../validation/schemas/updateMeetup.schema";
@@ -7,9 +7,9 @@ import { MeetupIdSchema } from "../../validation/schemas/meetupId.schema";
 import { checkRole } from "../../auth/middleware/checkRoles";
 import { Roles } from "../../auth/enums/roles";
 import { PaginationQueryParamsSchema } from "../../validation/schemas/paginationQueryParams.schema";
-import { paginateResults } from "../middleware/paginateResults";
-import { signUpForMeetupByJwt } from "../middleware/signUpForMeetupByJwt";
-import { sendAppropriateResponse } from "../middleware/sendAppropriateResponse";
+import { paginateResults } from "../middleware/functions/paginateResults";
+import { signUpForMeetupByJwt } from "../middleware/functions/signUpForMeetupByJwt";
+import MeetupResponser from "../middleware/classes/meetupResponser";
 
 const meetupsRouter = Router();
 
@@ -22,25 +22,25 @@ meetupsRouter.post(
   "/",
   checkRole(Roles.meetup_organizer),
   validateRequestProperty("body", CreateMeetupSchema),
-  sendAppropriateResponse(MeetupController.create)
+  MeetupResponser.createMeetup
 );
 meetupsRouter.get(
   "/:id",
   validateRequestProperty("params", MeetupIdSchema),
-  sendAppropriateResponse(MeetupController.getById)
+  MeetupResponser.getMeetup
 );
 meetupsRouter.patch(
   "/:id",
   checkRole(Roles.meetup_organizer),
   validateRequestProperty("params", MeetupIdSchema),
   validateRequestProperty("body", UpdateMeetupSchema),
-  sendAppropriateResponse(MeetupController.update)
+  MeetupResponser.updateMeetup
 );
 meetupsRouter.delete(
   "/:id",
   checkRole(Roles.meetup_organizer),
   validateRequestProperty("params", MeetupIdSchema),
-  sendAppropriateResponse(MeetupController.delete)
+  MeetupResponser.deleteMeetup
 );
 meetupsRouter.post(
   "/signup/:id",
