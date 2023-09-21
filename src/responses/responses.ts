@@ -13,8 +13,10 @@ const SUCCESSFULLY_DELETED_RESPONSE = createResponse(
 const MEETUP_NOT_FOUND_RESPONSE = createResponse(404, "Meetup not found");
 const INVALID_JSON_SYNTAX_RESPONSE = createResponse(400, "Invalid JSON syntax");
 const INVALID_TOKEN_RESPONSE = createResponse(400, "Invalid token");
+const ALREADY_SIGNED_UP_RESPONSE = createResponse(400, "Already signed up");
 
 export {
+  ALREADY_SIGNED_UP_RESPONSE,
   INVALID_TOKEN_RESPONSE,
   INVALID_JSON_SYNTAX_RESPONSE,
   MEETUP_NOT_FOUND_RESPONSE,

@@ -35,7 +35,7 @@ CREATE TABLE "MeetupUser" (
 CREATE UNIQUE INDEX "User_login_key" ON "User"("login");
 
 -- AddForeignKey
-ALTER TABLE "MeetupUser" ADD CONSTRAINT "MeetupUser_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "MeetupUser" ADD CONSTRAINT "MeetupUser_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "MeetupUser" ADD CONSTRAINT "MeetupUser_meetupId_fkey" FOREIGN KEY ("meetupId") REFERENCES "Meetup"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "MeetupUser" ADD CONSTRAINT "MeetupUser_meetupId_fkey" FOREIGN KEY ("meetupId") REFERENCES "Meetup"("id") ON DELETE CASCADE ON UPDATE CASCADE;

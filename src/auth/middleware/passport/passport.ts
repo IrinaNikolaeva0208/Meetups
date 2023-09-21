@@ -1,6 +1,6 @@
 import passport from "passport";
 import LocalStrategy from "./strategies/local.strategy";
-import JwtStrategy from "./strategies/createJwtStrategy";
+import JwtStrategy from "./strategies/JwtStrategy";
 
 passport.use("local", LocalStrategy);
 passport.use("jwt-access", JwtStrategy(process.env.JWT_SECRET_KEY));

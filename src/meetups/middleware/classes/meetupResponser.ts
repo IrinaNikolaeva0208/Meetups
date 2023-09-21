@@ -12,12 +12,12 @@ export class MeetupResponser {
       res
         .status(MEETUP_NOT_FOUND_RESPONSE.statusCode)
         .json(MEETUP_NOT_FOUND_RESPONSE);
-    else res.send(200).json(meetupToGet);
+    else res.status(200).json(meetupToGet);
   }
 
   async createMeetup(req: Request, res: Response) {
     const createdMeetup = await MeetupDatabaseController.create(req.body);
-    res.send(201).json(createdMeetup);
+    res.status(201).json(createdMeetup);
   }
 
   async updateMeetup(req: Request, res: Response) {
@@ -32,7 +32,7 @@ export class MeetupResponser {
       const updatedMeetup = await MeetupDatabaseController.update(
         req.params.id,
         {
-          data: req.body,
+          data: { ...req.body, time: new Date(req.body.time).toISOString() },
         }
       );
       res.status(200).json(updatedMeetup);

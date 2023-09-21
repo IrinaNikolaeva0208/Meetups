@@ -42,7 +42,7 @@ class MeetupDatabaseController {
   }
 
   async delete(id: string) {
-    await database.meetup.delete({
+    const deletedMeetup = await database.meetup.delete({
       where: { id },
     });
   }
