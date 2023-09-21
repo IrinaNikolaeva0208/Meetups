@@ -2,9 +2,9 @@ import { Router } from "express";
 import { validateRequestProperty } from "../../validation/middleware/validateRequestProperty";
 import { CreateUserSchema } from "../../validation/schemas/createUser.schema";
 import { LoginSchema } from "../../validation/schemas/loginSchema";
-import signUp from "../middleware/signUp";
-import sendTokens from "../middleware/sendTokens";
-import refreshAccessToken from "../middleware/refreshAccessToken";
+import { signUp } from "../middleware/functions/signUp";
+import { authenticate } from "../middleware/functions/authenticate";
+import { refreshAccessToken } from "../middleware/functions/refreshAccessToken";
 
 const authRouter = Router();
 
@@ -16,7 +16,7 @@ authRouter.post(
 authRouter.post(
   "/login",
   validateRequestProperty("body", LoginSchema),
-  sendTokens
+  authenticate
 );
 authRouter.post("/refresh", refreshAccessToken);
 

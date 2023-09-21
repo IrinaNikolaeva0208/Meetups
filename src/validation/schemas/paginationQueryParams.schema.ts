@@ -8,5 +8,5 @@ export const PaginationQueryParamsSchema = Joi.object().keys({
   time: Joi.string().isoDate(),
   place: Joi.string().alphanum(),
   tags: Joi.string(),
-  search: Joi.string(),
+  search: Joi.string().alphanum(),
 });
