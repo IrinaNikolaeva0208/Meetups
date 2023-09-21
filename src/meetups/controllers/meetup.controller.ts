@@ -1,4 +1,5 @@
 import { database } from "../../database/prisma.client";
+import { SUCCESSFULLY_DELETED_RESPONSE } from "../../responses/responses";
 import { CreateMeetupBody } from "../interfaces/createMeetupRequestOptions";
 import { PaginationFilter } from "../interfaces/paginationFilter";
 import { paginationOptions } from "../interfaces/paginationOptions";
@@ -66,7 +67,6 @@ class MeetupController {
     const deletedMeetup = await database.meetup.delete({
       where: { id: requestOptions.id },
     });
-    if (deletedMeetup) return { message: "Successfully deleted" };
   }
 }
 

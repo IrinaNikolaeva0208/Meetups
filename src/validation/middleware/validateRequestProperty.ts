@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import Joi from "joi";
+import { createResponse } from "../../responses/createResponse";
 
 export function validateRequestProperty(
   property: keyof Request,
@@ -10,8 +11,8 @@ export function validateRequestProperty(
     if (!error) {
       next();
     } else {
-      const { details } = error;
-      res.status(400).json({ message: "Bad Request", error: details });
+      const response = createResponse(400, error.message);
+      res.status(response.statusCode).json(response);
     }
   };
 }

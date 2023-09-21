@@ -1,7 +1,8 @@
 import { Strategy, ExtractJwt } from "passport-jwt";
 import userController from "../../controllers/user.controller";
+import { INVALID_TOKEN_RESPONSE } from "../../../responses/responses";
 
-export default function createJwtStrategy(secretOrKey: string) {
+export default function JwtStrategy(secretOrKey: string) {
   const jwtOptions = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey,
@@ -13,7 +14,7 @@ export default function createJwtStrategy(secretOrKey: string) {
     if (userWithAcceptedJwt) {
       done(null, userWithAcceptedJwt);
     } else {
-      done(null, false, { message: "Invalid token" });
+      done(null, false, INVALID_TOKEN_RESPONSE);
     }
   });
 }

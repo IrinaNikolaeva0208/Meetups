@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import passport from "../passport/passport";
+import { createResponse } from "../../responses/createResponse";
 
 export default function checkIfTokenIsValid(
   req: Request,
@@ -11,7 +12,8 @@ export default function checkIfTokenIsValid(
     { session: false },
     (err, userPayload, info) => {
       if (err || !userPayload) {
-        res.status(401).json({ message: info.message });
+        const response = createResponse(401, info.message);
+        res.status(response.statusCode).json(response);
       } else next();
     }
   )(req, res, next);

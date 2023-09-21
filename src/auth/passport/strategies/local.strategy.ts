@@ -1,6 +1,7 @@
 import userController from "../../controllers/user.controller";
-import { Strategy as LocalStrategy } from "passport-local";
+import { IVerifyOptions, Strategy as LocalStrategy } from "passport-local";
 import * as bcrypt from "bcrypt";
+import { WRONG_CREDENTIALS_RESPONSE } from "../../../responses/responses";
 
 export default new LocalStrategy(
   {
@@ -17,14 +18,16 @@ export default new LocalStrategy(
         );
 
         if (!passwordIsCorrect) {
-          return done(null, false, {
-            message: "Incorrect login or password",
-          });
+          return done(
+            null,
+            false,
+            WRONG_CREDENTIALS_RESPONSE as IVerifyOptions
+          );
         }
         const { password, ...userPayload } = userWithSameLogin;
         return done(null, userPayload);
       } else {
-        return done(null, false, { message: "Incorrect login or password" });
+        return done(null, false, WRONG_CREDENTIALS_RESPONSE as IVerifyOptions);
       }
     } catch (error) {
       return done(error);
