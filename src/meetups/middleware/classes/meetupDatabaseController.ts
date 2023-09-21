@@ -2,6 +2,7 @@ import { database } from "../../../database/prisma.client";
 import { CreateMeetupBody } from "../../interfaces/createMeetupRequestOptions";
 import { PaginationFilter } from "../../interfaces/paginationFilter";
 import { paginationOptions } from "../../interfaces/paginationOptions";
+import { UpdateOptions } from "../../interfaces/updateOptions";
 
 class MeetupDatabaseController {
   async getAll(options: paginationOptions) {
@@ -9,12 +10,12 @@ class MeetupDatabaseController {
     return allMeetups;
   }
 
-  async getAllLength(filter: PaginationFilter) {
+  async getAllNumber(filter: PaginationFilter) {
     const allMeetups = await database.meetup.count(filter);
     return allMeetups;
   }
 
-  async update(id: string, updateOptions: any) {
+  async update(id: string, updateOptions: UpdateOptions) {
     const updatedMeetup = await database.meetup.update({
       where: { id },
       ...updateOptions,

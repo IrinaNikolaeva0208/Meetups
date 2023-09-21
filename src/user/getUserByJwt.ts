@@ -1,7 +1,7 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import * as jwt from "jsonwebtoken";
 
-export function getUserByJwt(req: Request, res: Response, next: NextFunction) {
+export function getUserByJwt(req: Request, res: Response) {
   const currentUser = jwt.decode(
     req.headers.authorization.slice(7)
   ) as jwt.JwtPayload;

@@ -1,22 +1,21 @@
 import { Request, Response } from "express";
 import { formPaginationOptions } from "./formPaginationOptions";
+import MeetupDatabaseController from "../classes/meetupDatabaseController";
 
-export function paginateResults(
-  getRequestResults: Function,
-  getResultsLength: Function
-) {
-  return async function (
-    req: Request<{}, {}, {}, Record<string, string>>,
-    res: Response
-  ) {
-    const paginationOptions = formPaginationOptions(req.query);
+export function paginateAllMeetups() {
+  return async function (req: Request, res: Response) {
+    const paginationOptions = formPaginationOptions(
+      req.query as Record<string, string>
+    );
 
-    const results = await getRequestResults(paginationOptions);
+    const results = await MeetupDatabaseController.getAll(paginationOptions);
 
     const paginationResponse = {
       data: results,
-      paginationData: {
-        total: await getResultsLength({ where: paginationOptions.where }),
+      pagination: {
+        total: await MeetupDatabaseController.getAllNumber({
+          where: paginationOptions.where,
+        }),
         ...req.query,
       },
     };

@@ -24,7 +24,8 @@ export default new LocalStrategy(
             WRONG_CREDENTIALS_RESPONSE as IVerifyOptions
           );
         }
-        const { password, ...userPayload } = userWithSameLogin;
+        const userPayload = userWithSameLogin;
+        delete userPayload.password;
         return done(null, userPayload);
       } else {
         return done(null, false, WRONG_CREDENTIALS_RESPONSE as IVerifyOptions);

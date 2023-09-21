@@ -1,5 +1,4 @@
 import { Request, Response, json } from "express";
-import { createResponse } from "../../responses/createResponse";
 import { INVALID_JSON_SYNTAX_RESPONSE } from "../../responses/responses";
 
 export const validateJSON = json({

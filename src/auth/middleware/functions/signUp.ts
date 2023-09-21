@@ -7,9 +7,8 @@ export async function signUp(req: Request, res: Response) {
   if (sameUser)
     res.status(LOGIN_IN_USE_RESPONSE.statusCode).json(LOGIN_IN_USE_RESPONSE);
   else {
-    const { password, ...newUserPayload } = await userController.create(
-      req.body
-    );
+    const newUserPayload = await userController.create(req.body);
+    delete newUserPayload.password;
     res.status(201).json(newUserPayload);
   }
 }
