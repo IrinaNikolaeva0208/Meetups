@@ -6,10 +6,11 @@
   "author": "Irina Nikolaeva <irina2002.nikolaeva@yandex.ru>",
   "license": "MIT",
   "scripts": {
-    "start": "npx ts-node ./src/app.ts",
+    "start": "yarn run build && yarn run ./dist/src/app.js",
     "start:migrate": "prisma migrate deploy && yarn run start",
     "build": "npx tsc",
-    "lint": "eslint src/**/*.ts --fix"
+    "lint": "eslint src/**/*.ts --fix",
+    "migrate:init": "npx prisma migrate dev --name init"
   },
   "devDependencies": {
     "@types/express": "^4.17.17",
