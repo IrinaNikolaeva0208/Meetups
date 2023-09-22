@@ -1,8 +1,8 @@
-import { database } from "../../../utils/database/prisma.client";
-import { CreateMeetupBody } from "../../interfaces/createMeetupRequestOptions";
-import { PaginationFilter } from "../../interfaces/paginationFilter";
-import { paginationOptions } from "../../interfaces/paginationOptions";
-import { UpdateOptions } from "../../interfaces/updateOptions";
+import { database } from "@database/prisma.client";
+import { CreateMeetupBody } from "@meetupInterfaces/createMeetupRequestOptions";
+import { PaginationFilter } from "@meetupInterfaces/paginationFilter";
+import { paginationOptions } from "@meetupInterfaces/paginationOptions";
+import { UpdateOptions } from "@meetupInterfaces/updateOptions";
 
 class MeetupDatabaseController {
   async getAll(options: paginationOptions) {
@@ -42,7 +42,7 @@ class MeetupDatabaseController {
   }
 
   async delete(id: string) {
-    const deletedMeetup = await database.meetup.delete({
+    await database.meetup.delete({
       where: { id },
     });
   }

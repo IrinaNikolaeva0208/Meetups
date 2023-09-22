@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { validateRequestProperty } from "../../validation/middleware/validateRequestProperty";
-import { CreateUserSchema } from "../../validation/schemas/createUser.schema";
-import { LoginSchema } from "../../validation/schemas/loginSchema";
+import { validateRequestProperty } from "@validators/validateRequestProperty";
+import { CreateUserSchema } from "@schemas/createUser.schema";
+import { LoginSchema } from "@schemas/loginSchema";
 import { signUp } from "../middleware/functions/signUp";
 import { authenticate } from "../middleware/functions/authenticate";
 import { refreshAccessToken } from "../middleware/functions/refreshAccessToken";

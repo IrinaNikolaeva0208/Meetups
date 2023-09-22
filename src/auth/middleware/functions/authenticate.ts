@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import * as jwt from "jsonwebtoken";
 import passport from "../passport/passport";
-import { createResponse } from "../../../utils/responses/createResponse";
+import { createResponse } from "@responses/createResponse";
 
 export function authenticate(req: Request, res: Response, next: NextFunction) {
   passport.authenticate(

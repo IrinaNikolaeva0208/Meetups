@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import * as jwt from "jsonwebtoken";
-import { FORBIDDEN_RESPONSE } from "../../../utils/responses/responses";
+import { FORBIDDEN_RESPONSE } from "@responses/responses";
 
 export function checkRole(requiredRole: string) {
   return function (req: Request, res: Response, next: NextFunction) {

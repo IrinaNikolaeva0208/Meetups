@@ -7,6 +7,16 @@
     "esModuleInterop": true,                            
     "forceConsistentCasingInFileNames": true,          
     "noImplicitAny": false,
-    "skipLibCheck": true                               
+    "skipLibCheck": true,   
+    "paths": {
+      "@authorization/*" : ["./src/auth/middleware/functions/*"],
+      "@schemas/*" : ["./src/validation/schemas/*"],
+      "@database/*" : ["./src/utils/database/*"],
+      "@responses/*" : ["./src/utils/responses/*"],
+      "@meetupInterfaces/*": ["./src/meetups/interfaces/*"],
+      "@authInterfaces/*": ["./src/auth/interfaces/*"],
+      "@authClasses/*": ["./src/auth/middleware/classes/*"],
+      "@validators/*" : ["./src/validation/middleware/*"],
+    }                            
   }
 }

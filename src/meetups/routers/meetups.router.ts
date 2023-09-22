@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { validateRequestProperty } from "../../validation/middleware/validateRequestProperty";
-import { CreateMeetupSchema } from "../../validation/schemas/createMeetup.schema";
-import { UpdateMeetupSchema } from "../../validation/schemas/updateMeetup.schema";
-import { MeetupIdSchema } from "../../validation/schemas/meetupId.schema";
-import { checkRole } from "../../auth/middleware/functions/checkRole";
-import { Roles } from "../../auth/enums/roles";
-import { PaginationQueryParamsSchema } from "../../validation/schemas/paginationQueryParams.schema";
+import { validateRequestProperty } from "@validators/validateRequestProperty";
+import { CreateMeetupSchema } from "@schemas/createMeetup.schema";
+import { UpdateMeetupSchema } from "@schemas/updateMeetup.schema";
+import { MeetupIdSchema } from "@schemas/meetupId.schema";
+import { checkRole } from "@authorization/checkRole";
+import { Roles } from "@authInterfaces/roles.enum";
+import { PaginationQueryParamsSchema } from "@schemas/paginationQueryParams.schema";
 import { paginateAllMeetups } from "../middleware/functions/paginateResults";
 import { signUpForMeetupByJwt } from "../middleware/functions/signUpForMeetupByJwt";
 import MeetupResponser from "../middleware/classes/meetupResponser";

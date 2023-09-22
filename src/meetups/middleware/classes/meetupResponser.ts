@@ -3,7 +3,7 @@ import MeetupDatabaseController from "./meetupDatabaseController";
 import {
   MEETUP_NOT_FOUND_RESPONSE,
   SUCCESSFULLY_DELETED_RESPONSE,
-} from "../../../utils/responses/responses";
+} from "@responses/responses";
 
 export class MeetupResponser {
   async getMeetup(req: Request, res: Response) {
