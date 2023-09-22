@@ -1,0 +1,832 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Meetups Application
+  description: ""
+servers:
+  - url: http://localhost:3000/
+paths:
+  /auth/signup:
+    post:
+      tags:
+        - auth
+      summary: Register in the application
+      description: API to register in the application
+      responses:
+        "201":
+          description: Successfully signed up
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 8172d1aa-72e2-4461-a717-42463eb0ec7f
+                  login:
+                    type: string
+                    example: masha123
+                  role:
+                    type: string
+                    enum:
+                      - USER
+                      - MEETUP_ORGANIZER
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: '"login" is required'
+        "409":
+          description: Login already in use
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 409
+                  message:
+                    type: string
+                    example: Login already in use
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                login:
+                  type: string
+                  example: masha123
+                password:
+                  type: string
+                  example: 12345678
+                role:
+                  type: string
+                  enum:
+                    - USER
+                    - MEETUP_ORGANIZER
+  /auth/login:
+    post:
+      tags:
+        - auth
+      summary: Log in the application
+      description: API to log in the application with login and password
+      responses:
+        "200":
+          description: Logged in successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                    example: your access token
+                  refreshToken:
+                    type: string
+                    example: your refresh token
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: '"login" is required'
+        "401":
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 401
+                  message:
+                    type: string
+                    example: Incorrect login or password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                login:
+                  type: string
+                  example: masha123
+                password:
+                  type: string
+                  example: 12345678
+  /auth/refresh:
+    post:
+      tags:
+        - auth
+      summary: Refresh access token
+      description: API to refresh access jwt token
+      responses:
+        "200":
+          description: Successfully refreshed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                    example: your access token
+        "401":
+          description: Authorization failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 401
+                  message:
+                    type: string
+                    example: jwt expired
+      security:
+        - bearer: []
+  /meetups/:
+    get:
+      tags:
+        - meetups
+      summary: Get page of meetups
+      description: API to get page of meetups
+      parameters:
+        - name: offset
+          in: query
+          required: true
+          description: Page offset
+          example: 2
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: true
+          description: Page limit of meetups
+          example: 4
+          schema:
+            type: string
+        - name: sort
+          in: query
+          required: false
+          description: Field to sort meetups by
+          example: place
+          schema:
+            type: string
+        - name: order
+          in: query
+          required: false
+          description: Order of sorting
+          example: asc
+          schema:
+            type: string
+        - name: time
+          in: query
+          required: false
+          description: Time to filter meetups
+          example: 2023-04-22T12:00
+          schema:
+            type: string
+        - name: place
+          in: query
+          required: false
+          description: Place to filter meetups
+          example: Minsk
+          schema:
+            type: string
+        - name: tags
+          in: query
+          required: false
+          description: Tags to filter meetups
+          example: awesome,fun,enjoy
+          schema:
+            type: string
+        - name: search
+          in: query
+          required: false
+          description: Substring to be contained in meetup name
+          example: my
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Meetups page successfully obtained
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: ""
+                        name:
+                          type: string
+                          example: myMeetup
+                        description:
+                          type: string
+                          example: my awesome meetup
+                        tags:
+                          type: array
+                          example:
+                            - awesome
+                            - fun
+                            - ice-cream
+                          items:
+                            type: string
+                        time:
+                          type: string
+                          example: "2023-01-01T00:00:00.000Z"
+                        place:
+                          type: string
+                          example: Minsk
+                  pagination:
+                    type: object
+                    properties:
+                      total:
+                        type: number
+                        example: 1
+                      offset:
+                        type: string
+                        example: "2"
+                      limit:
+                        type: string
+                        example: "4"
+                      sort:
+                        type: string
+                        example: place
+                      order:
+                        type: string
+                        example: asc
+                      tags:
+                        type: string
+                        example: awesome,fun
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: '"limit" is required'
+        "401":
+          description: Authorization failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 401
+                  message:
+                    type: string
+                    example: jwt expired
+      security:
+        - bearer: []
+    post:
+      tags:
+        - meetups
+      summary: Create meetup
+      description: API to create meetup based on request body
+      responses:
+        "201":
+          description: Meetup successfully created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: myMeetup
+                  id:
+                    type: string
+                    example: 125284b9-d9b3-4a20-bc9e-79df0262dc69
+                  descpription:
+                    type: string
+                    example: My awesome meetup
+                  tags:
+                    type: array
+                    example:
+                      - awesome
+                    items:
+                      type: string
+                  time:
+                    type: string
+                    example: 2023-11-09T12:00
+                  place:
+                    type: string
+                    example: Moscow
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: '"id" must be valid GUID'
+        "401":
+          description: Authorization failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 401
+                  message:
+                    type: string
+                    example: jwt expired
+        "403":
+          description: No rights to perform the operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 403
+                  message:
+                    type: string
+                    example: Forbidden
+      security:
+        - bearer: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: myMeetup
+                descpription:
+                  type: string
+                  example: My awesome meetup
+                tags:
+                  type: array
+                  items:
+                    type: string
+                  example:
+                    - awesome
+                time:
+                  type: string
+                  example: 2023-11-09T12:00
+                place:
+                  type: string
+                  example: Moscow
+  /meetups:{id}:
+    get:
+      tags:
+        - meetups
+      summary: Get meetup by ID
+      description: API to get meetup based on meetup ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Meetup ID to search
+          example: 125284b9-d9b3-4a20-bc9e-79df0262dc69
+      responses:
+        "200":
+          description: Meetup successfully obtained.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 125284b9-d9b3-4a20-bc9e-79df0262dc69
+                  name:
+                    type: string
+                    example: myMeetup
+                  descpription:
+                    type: string
+                    example: My awesome meetup
+                  tags:
+                    type: array
+                    example:
+                      - awesome
+                    items:
+                      type: string
+                  time:
+                    type: string
+                    example: 2023-12-09T12:00
+                  place:
+                    type: string
+                    example: Minsk
+                  users:
+                    type: array
+                    example: []
+                    items: {}
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 404
+                  message:
+                    type: string
+                    example: Meetup not found
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: '"id" must be valid GUID'
+        "401":
+          description: Authorization failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 401
+                  message:
+                    type: string
+                    example: jwt expired
+      security:
+        - bearer: []
+    patch:
+      tags:
+        - meetups
+      summary: Update meetup by ID
+      description: API to update meetup based on meetup ID with request body
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Meetup ID to search
+          example: 125284b9-d9b3-4a20-bc9e-79df0262dc69
+      responses:
+        "200":
+          description: Meetup successfully updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 125284b9-d9b3-4a20-bc9e-79df0262dc69
+                  name:
+                    type: string
+                    example: myMeetup
+                  descpription:
+                    type: string
+                    example: My awesome meetup
+                  tags:
+                    type: array
+                    example:
+                      - awesome
+                    items:
+                      type: string
+                  time:
+                    type: string
+                    example: 2023-11-09T12:00
+                  place:
+                    type: string
+                    example: Moscow
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 404
+                  message:
+                    type: string
+                    example: Meetup not found
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: '"id" must be valid GUID'
+        "401":
+          description: Authorization failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 401
+                  message:
+                    type: string
+                    example: jwt expired
+        "403":
+          description: No rights to perform the operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 403
+                  message:
+                    type: string
+                    example: Forbidden
+      security:
+        - bearer: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: myMeetup
+                descpription:
+                  type: string
+                  example: My awesome meetup
+                tags:
+                  type: array
+                  items:
+                    type: string
+                  example:
+                    - awesome
+                time:
+                  type: string
+                  example: 2023-11-09T12:00
+                place:
+                  type: string
+                  example: Moscow
+    delete:
+      tags:
+        - meetups
+      summary: Delete meetup by ID
+      description: API to delete meetup based on meetup ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Meetup ID to search
+          example: 125284b9-d9b3-4a20-bc9e-79df0262dc69
+      responses:
+        "204":
+          description: Meetup successfully deleted
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 404
+                  message:
+                    type: string
+                    example: Meetup not found
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: '"id" must be valid GUID'
+        "401":
+          description: Authorization failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 401
+                  message:
+                    type: string
+                    example: jwt expired
+        "403":
+          description: No rights to perform the operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 403
+                  message:
+                    type: string
+                    example: Forbidden
+      security:
+        - bearer: []
+  /meetups/signup/{id}:
+    post:
+      tags:
+        - meetups
+      summary: Sign up for meetup by ID
+      description: API to sign up for meetup by meetup ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Meetup ID to search
+          example: 125284b9-d9b3-4a20-bc9e-79df0262dc69
+      responses:
+        "201":
+          description: Meetup successfully obtained.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 125284b9-d9b3-4a20-bc9e-79df0262dc69
+                  name:
+                    type: string
+                    example: myMeetup
+                  descpription:
+                    type: string
+                    example: My awesome meetup
+                  tags:
+                    type: array
+                    example:
+                      - awesome
+                    items:
+                      type: string
+                  time:
+                    type: string
+                    example: 2023-12-09T12:00
+                  place:
+                    type: string
+                    example: Minsk
+                  users:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        userId:
+                          type: string
+                          example: 725284b9-d9b3-4a20-bc8e-7c4f0262dc69
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 404
+                  message:
+                    type: string
+                    example: Meetup not found
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: '"id" must be valid GUID'
+        "401":
+          description: Authorization failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 401
+                  message:
+                    type: string
+                    example: jwt expired
+      security:
+        - bearer: []
+  /user:
+    get:
+      tags:
+        - user
+      responses:
+        "200":
+          description: User succssfully obtained
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 8172d1aa-72e2-4461-a717-42463eb0ec7f
+                  login:
+                    type: string
+                    example: masha123
+                  role:
+                    enum:
+                      - USER
+                      - MEETUP_ORGANIZER
+                  iat:
+                    type: number
+                    example: 1695317915
+                  exp:
+                    type: number
+                    example: 1695327915
+        "401":
+          description: Authorization failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 401
+                  message:
+                    type: string
+                    example: jwt expired
+      security:
+        - bearer: []
+components:
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
