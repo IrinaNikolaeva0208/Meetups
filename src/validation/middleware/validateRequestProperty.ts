@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import Joi from "joi";
-import { createResponse } from "../../responses/createResponse";
+import { createResponse } from "../../utils/responses/createResponse";
 
 export function validateRequestProperty(
   property: keyof Request,

@@ -1,6 +1,6 @@
 import { Strategy, ExtractJwt } from "passport-jwt";
 import UserDatabaseController from "../../classes/userDatabaseController";
-import { INVALID_TOKEN_RESPONSE } from "../../../../responses/responses";
+import { INVALID_TOKEN_RESPONSE } from "../../../../utils/responses/responses";
 
 export default function JwtStrategy(secretOrKey: string) {
   const jwtOptions = {

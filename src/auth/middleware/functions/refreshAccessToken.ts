@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import * as jwt from "jsonwebtoken";
 import passport from "../passport/passport";
-import { createResponse } from "../../../responses/createResponse";
+import { createResponse } from "../../../utils/responses/createResponse";
 
 export function refreshAccessToken(
   req: Request,

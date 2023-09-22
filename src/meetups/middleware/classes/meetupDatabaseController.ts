@@ -1,4 +1,4 @@
-import { database } from "../../../database/prisma.client";
+import { database } from "../../../utils/database/prisma.client";
 import { CreateMeetupBody } from "../../interfaces/createMeetupRequestOptions";
 import { PaginationFilter } from "../../interfaces/paginationFilter";
 import { paginationOptions } from "../../interfaces/paginationOptions";

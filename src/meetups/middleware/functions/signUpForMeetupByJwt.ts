@@ -4,7 +4,7 @@ import MeetupDatabaseController from "../classes/meetupDatabaseController";
 import {
   ALREADY_SIGNED_UP_RESPONSE,
   MEETUP_NOT_FOUND_RESPONSE,
-} from "../../../responses/responses";
+} from "../../../utils/responses/responses";
 
 export async function signUpForMeetupByJwt(req: Request, res: Response) {
   const { id } = jwt.decode(

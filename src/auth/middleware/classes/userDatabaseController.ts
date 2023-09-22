@@ -1,4 +1,4 @@
-import { database } from "../../../database/prisma.client";
+import { database } from "../../../utils/database/prisma.client";
 import * as bcrypt from "bcrypt";
 import { CreateUserBody } from "../../interfaces/CreateUserBody";
 
