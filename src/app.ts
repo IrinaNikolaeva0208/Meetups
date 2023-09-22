@@ -6,6 +6,7 @@ import { validateJSON } from "./validation/middleware/validateJSON";
 import authRouter from "./auth/routers/auth.router";
 import checkIfTokenIsValid from "./auth/middleware/functions/checkIfTokenIsValid";
 import { getUserByJwt } from "./user/getUserByJwt";
+import cors from "cors";
 
 dotenv.config();
 
@@ -13,6 +14,7 @@ const PORT = process.env.PORT || 4000;
 
 const meetupsApp = express();
 
+meetupsApp.use(cors());
 meetupsApp.use(validateJSON);
 meetupsApp.use("/auth", authRouter);
 meetupsApp.use("/meetups", checkIfTokenIsValid, meetupsRouter);
