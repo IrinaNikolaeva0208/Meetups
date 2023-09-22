@@ -1,7 +1,7 @@
-import UserDatabaseController from "../../classes/userDatabaseController";
+import UserDatabaseController from "@authClasses/userDatabaseController";
 import { IVerifyOptions, Strategy as LocalStrategy } from "passport-local";
 import * as bcrypt from "bcrypt";
-import { WRONG_CREDENTIALS_RESPONSE } from "../../../../responses/responses";
+import { WRONG_CREDENTIALS_RESPONSE } from "@responses/responses";
 
 export default new LocalStrategy(
   {

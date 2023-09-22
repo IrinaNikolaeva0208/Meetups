@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import userController from "../classes/userDatabaseController";
-import { LOGIN_IN_USE_RESPONSE } from "../../../responses/responses";
+import { LOGIN_IN_USE_RESPONSE } from "@responses/responses";
 
 export async function signUp(req: Request, res: Response) {
   const sameUser = await userController.getByLogin(req.body.login);

@@ -1,6 +1,6 @@
-import { database } from "../../../database/prisma.client";
+import { database } from "@database/prisma.client";
 import * as bcrypt from "bcrypt";
-import { CreateUserBody } from "../../interfaces/CreateUserBody";
+import { CreateUserBody } from "@authInterfaces/CreateUserBody";
 
 class UserDatabaseController {
   async getById(id: string) {

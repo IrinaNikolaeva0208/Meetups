@@ -1,10 +1,11 @@
+import "module-alias/register";
 import express from "express";
 import * as dotenv from "dotenv";
 import meetupsRouter from "./meetups/routers/meetups.router";
-import { sendInvalidRouteResponse } from "./validation/middleware/sendInvalidRouteResponse";
-import { validateJSON } from "./validation/middleware/validateJSON";
+import { sendInvalidRouteResponse } from "@validators/sendInvalidRouteResponse";
+import { validateJSON } from "@validators/validateJSON";
 import authRouter from "./auth/routers/auth.router";
-import checkIfTokenIsValid from "./auth/middleware/functions/checkIfTokenIsValid";
+import checkIfTokenIsValid from "@authorization/checkIfTokenIsValid";
 import { getUserByJwt } from "./user/getUserByJwt";
 import cors from "cors";
 
