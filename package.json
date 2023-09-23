@@ -9,11 +9,11 @@
     "docker:start": "docker-compose up",
     "start": "yarn run build && node ./dist/app.js",
     "start:migrate": "prisma migrate deploy && yarn run start",
-    "build": "npx tsc && prisma generate",
+    "build": "npx tsc",
     "lint": "eslint src/**/*.ts --fix",
     "migrate:init": "npx prisma migrate dev --name init"
   },
-  "_moduleAliases": {
+  "_moduleAliases" : {
     "@authorization": "./dist/auth/middleware/functions",
     "@schemas": "./dist/validation/schemas",
     "@database": "./dist/utils/database",
