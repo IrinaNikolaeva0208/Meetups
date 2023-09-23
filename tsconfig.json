@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "ES6",                                  
+    "module": "Node16",                                     
+    "moduleResolution": "Node16", 
+    "outDir": "./dist",                 
+    "esModuleInterop": true,                            
+    "forceConsistentCasingInFileNames": true,          
+    "noImplicitAny": false,
+    "skipLibCheck": true,   
+    "paths": {
+      "@authorization/*" : ["./src/auth/middleware/functions/*"],
+      "@schemas/*" : ["./src/validation/schemas/*"],
+      "@database/*" : ["./src/utils/database/*"],
+      "@responses/*" : ["./src/utils/responses/*"],
+      "@meetupInterfaces/*": ["./src/meetups/interfaces/*"],
+      "@authInterfaces/*": ["./src/auth/interfaces/*"],
+      "@authClasses/*": ["./src/auth/middleware/classes/*"],
+      "@validators/*" : ["./src/validation/middleware/*"],
+    }                            
+  }
+}
