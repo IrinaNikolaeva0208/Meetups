@@ -21,7 +21,8 @@
     "@meetupInterfaces": "./dist/meetups/interfaces",
     "@authInterfaces": "./dist/auth/interfaces",
     "@authClasses": "./dist/auth/middleware/classes",
-    "@validators": "./dist/validation/middleware"
+    "@validators": "./dist/validation/middleware",
+    "@environment" : "./dist/utils/environment/variables"
   },
   "devDependencies": {
     "@types/express": "^4.17.17",

@@ -1,5 +1,6 @@
 import { database } from "@database/prisma.client";
 import * as bcrypt from "bcrypt";
+import { envVars } from "@environment";
 import { CreateUserBody } from "@authInterfaces/CreateUserBody";
 
 class UserDatabaseController {
@@ -17,7 +18,7 @@ class UserDatabaseController {
     const createdUser = await database.user.create({
       data: {
         ...body,
-        password: await bcrypt.hash(body.password, +process.env.CRYPT_SALT),
+        password: await bcrypt.hash(body.password, +envVars.CRYPT_SALT),
       },
     });
     return createdUser;

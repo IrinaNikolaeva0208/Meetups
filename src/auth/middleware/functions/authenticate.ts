@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import * as jwt from "jsonwebtoken";
+import { envVars } from "@environment";
 import passport from "../passport/passport";
 import { createResponse } from "@responses/createResponse";
 
@@ -13,17 +14,13 @@ export function authenticate(req: Request, res: Response, next: NextFunction) {
         const response = createResponse(401, info.message);
         res.status(response.statusCode).json(response);
       } else {
-        const accessToken = jwt.sign(userPayload, process.env.JWT_SECRET_KEY, {
-          expiresIn: process.env.JWT_TOKEN_EXPIRES_IN,
+        const accessToken = jwt.sign(userPayload, envVars.JWT_SECRET_KEY, {
+          expiresIn: envVars.JWT_TOKEN_EXPIRES_IN,
         });
 
-        const refreshToken = jwt.sign(
-          userPayload,
-          process.env.REFRESH_SECRET_KEY,
-          {
-            expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN,
-          }
-        );
+        const refreshToken = jwt.sign(userPayload, envVars.REFRESH_SECRET_KEY, {
+          expiresIn: envVars.REFRESH_TOKEN_EXPIRES_IN,
+        });
 
         res.status(200).json({ accessToken, refreshToken });
       }

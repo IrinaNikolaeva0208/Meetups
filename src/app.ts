@@ -1,6 +1,6 @@
 import "module-alias/register";
 import express from "express";
-import * as dotenv from "dotenv";
+import { envVars } from "@environment";
 import meetupsRouter from "./meetups/routers/meetups.router";
 import { sendInvalidRouteResponse } from "@validators/sendInvalidRouteResponse";
 import { validateJSON } from "@validators/validateJSON";
@@ -9,9 +9,7 @@ import checkIfTokenIsValid from "@authorization/checkIfTokenIsValid";
 import { getUserByJwt } from "./user/getUserByJwt";
 import cors from "cors";
 
-dotenv.config();
-
-const PORT = process.env.PORT || 4000;
+const PORT = envVars.PORT || 4000;
 
 const meetupsApp = express();
 
