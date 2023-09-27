@@ -1,6 +1,6 @@
 import { Strategy, ExtractJwt } from "passport-jwt";
 import UserDatabaseController from "@authClasses/userDatabaseController";
-import { INVALID_TOKEN_RESPONSE } from "@responses/responses";
+import { UnauthorizedError } from "@responses/httpErrors";
 
 export default function JwtStrategy(secretOrKey: string) {
   const jwtOptions = {
@@ -13,10 +13,7 @@ export default function JwtStrategy(secretOrKey: string) {
       jwtPayload.id
     );
 
-    if (userWithAcceptedJwt) {
-      done(null, userWithAcceptedJwt);
-    } else {
-      done(null, false, INVALID_TOKEN_RESPONSE);
-    }
+    if (!userWithAcceptedJwt) throw UnauthorizedError("Invalid token");
+    done(null, userWithAcceptedJwt);
   });
 }
