@@ -23,9 +23,10 @@
     "@authClasses": "./dist/auth/middleware/classes",
     "@validators": "./dist/validation/middleware",
     "@environment": "./dist/utils/environment/variables",
-    "@logger" : "./dist/utils/logger/logger"
+    "@logger": "./dist/utils/logger/logger"
   },
   "devDependencies": {
+    "@types/cookie-parser": "^1.4.4",
     "@types/express": "^4.17.17",
     "@types/joi": "^17.2.3",
     "@types/jsonwebtoken": "^9.0.2",
@@ -47,6 +48,7 @@
     "@types/bcrypt": "^5.0.0",
     "@types/cors": "^2.8.14",
     "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",

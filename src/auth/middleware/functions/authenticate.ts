@@ -22,7 +22,12 @@ export function authenticate(req: Request, res: Response, next: NextFunction) {
           expiresIn: envVars.REFRESH_TOKEN_EXPIRES_IN,
         });
 
-        res.status(200).json({ accessToken, refreshToken });
+        const response = createResponse(200, "Successfully logged in");
+        res
+          .status(response.statusCode)
+          .cookie("access", accessToken, { httpOnly: true })
+          .cookie("refresh", refreshToken, { httpOnly: true })
+          .json(response);
       }
     }
   )(req, res, next);

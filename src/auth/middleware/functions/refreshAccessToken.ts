@@ -24,7 +24,11 @@ export function refreshAccessToken(
       const accessToken = jwt.sign(userPayload, envVars.JWT_SECRET_KEY, {
         expiresIn: envVars.JWT_TOKEN_EXPIRES_IN,
       });
-      res.status(200).json({ accessToken });
+      const response = createResponse(200, "Successfully refreshed");
+      res
+        .status(response.statusCode)
+        .cookie("access", accessToken, { httpOnly: true })
+        .json(response);
     }
   )(req, res, next);
 }

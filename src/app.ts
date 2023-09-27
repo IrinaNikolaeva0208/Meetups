@@ -7,6 +7,7 @@ import createError from "http-errors";
 import authRouter from "./auth/routers/auth.router";
 import checkIfTokenIsValid from "@authorization/checkIfTokenIsValid";
 import { getUserByJwt } from "./user/getUserByJwt";
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import { createResponse } from "@responses/createResponse";
 
@@ -16,6 +17,7 @@ const meetupsApp = express();
 
 meetupsApp.use(cors());
 meetupsApp.use(express.json());
+meetupsApp.use(cookieParser());
 meetupsApp.use("/auth", authRouter);
 meetupsApp.use("/meetups", checkIfTokenIsValid, meetupsRouter);
 meetupsApp.use("/user", checkIfTokenIsValid, getUserByJwt);
