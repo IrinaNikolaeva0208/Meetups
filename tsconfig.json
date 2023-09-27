@@ -17,7 +17,8 @@
       "@authInterfaces/*": ["./src/auth/interfaces/*"],
       "@authClasses/*": ["./src/auth/middleware/classes/*"],
       "@validators/*" : ["./src/validation/middleware/*"],
-      "@environment" : ["./src/utils/environment/variables"]
+      "@environment" : ["./src/utils/environment/variables"],
+      "@logger" : ["./src/utils/logger/logger"]
     }                            
   }
 }

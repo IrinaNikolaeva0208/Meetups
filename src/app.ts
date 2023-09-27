@@ -1,6 +1,7 @@
 import "module-alias/register";
 import express from "express";
 import { envVars } from "@environment";
+import { logger } from "@logger";
 import meetupsRouter from "./meetups/routers/meetups.router";
 import createError from "http-errors";
 import authRouter from "./auth/routers/auth.router";
@@ -25,6 +26,7 @@ meetupsApp.use((err, _, res, next) => {
   if (res.headersSent) return next(err);
   const response = createResponse(err.status || err.statusCode || 500, err);
   res.status(response.statusCode).json(response);
+  response.statusCode < 500 ? logger.warn(err) : logger.error(err);
 });
 
-meetupsApp.listen(PORT, () => console.log("Server started on port " + PORT));
+meetupsApp.listen(PORT, () => logger.info("Server started on port " + PORT));
