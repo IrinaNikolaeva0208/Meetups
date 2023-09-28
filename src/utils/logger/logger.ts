@@ -2,7 +2,7 @@ import { createLogger, format, transports } from "winston";
 
 const { combine, timestamp, printf } = format;
 const loggingFormat = printf(({ level, message, timestamp }) => {
-  message = message.split("\r").join("");
+  if (typeof message == "string") message = message.split("\r").join("");
   return `${timestamp} - ${level} : ${message}`;
 });
 

@@ -2,7 +2,7 @@ import { ValidationErrorItem } from "joi";
 
 export function createResponse(
   statusCode: number,
-  message: string | ValidationErrorItem[]
+  error: string | ValidationErrorItem[]
 ) {
-  return { statusCode, message };
+  return { statusCode, error };
 }

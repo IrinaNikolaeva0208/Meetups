@@ -6,45 +6,43 @@ import { MeetupIdSchema } from "@schemas/meetupId.schema";
 import { checkRole } from "@authorization/checkRole";
 import { Roles } from "@authInterfaces/roles.enum";
 import { PaginationQueryParamsSchema } from "@schemas/paginationQueryParams.schema";
-import { paginateAllMeetups } from "../middleware/functions/paginateResults";
-import { signUpForMeetupByJwt } from "../middleware/functions/signUpForMeetupByJwt";
-import MeetupResponser from "../middleware/classes/meetupResponser";
+import { MeetupsController } from "./meetups.controller";
 
 const meetupsRouter = Router();
 
 meetupsRouter.get(
   "/",
   validateRequestProperty("query", PaginationQueryParamsSchema),
-  paginateAllMeetups
+  MeetupsController.getPageOfMeetups
 );
 meetupsRouter.post(
   "/",
   checkRole(Roles.meetup_organizer),
   validateRequestProperty("body", CreateMeetupSchema),
-  MeetupResponser.createMeetup
+  MeetupsController.createMeetup
 );
 meetupsRouter.get(
   "/:id",
   validateRequestProperty("params", MeetupIdSchema),
-  MeetupResponser.getMeetup
+  MeetupsController.getMeetupById
 );
 meetupsRouter.patch(
   "/:id",
   checkRole(Roles.meetup_organizer),
   validateRequestProperty("params", MeetupIdSchema),
   validateRequestProperty("body", UpdateMeetupSchema),
-  MeetupResponser.updateMeetup
+  MeetupsController.updateMeetup
 );
 meetupsRouter.delete(
   "/:id",
   checkRole(Roles.meetup_organizer),
   validateRequestProperty("params", MeetupIdSchema),
-  MeetupResponser.deleteMeetup
+  MeetupsController.deleteMeetup
 );
 meetupsRouter.post(
   "/signup/:id",
   validateRequestProperty("params", MeetupIdSchema),
-  signUpForMeetupByJwt
+  MeetupsController.signUpForMeetup
 );
 
 export default meetupsRouter;

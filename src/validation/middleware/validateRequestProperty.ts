@@ -8,7 +8,7 @@ export function validateRequestProperty(
 ) {
   return function (req: Request, res: Response, next: NextFunction) {
     const { error } = schema.validate(req[property]);
-    if (error) throw BadRequestError(error);
+    if (error) throw BadRequestError(error.details);
 
     next();
   };
