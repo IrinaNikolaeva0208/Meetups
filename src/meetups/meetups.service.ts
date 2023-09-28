@@ -1,8 +1,8 @@
 import meetupsRepository from "./meetups.repository";
 import { NotFoundError, BadRequestError } from "@responses/httpErrors";
 import { CreateMeetupBody } from "@meetupInterfaces/createMeetupRequestOptions";
-import { formPaginationOptions } from "./middleware/functions/formPaginationOptions";
-import { getUserByJwt } from "./middleware/functions/getUserByJwt";
+import { formPaginationOptions } from "./helpers/formPaginationOptions";
+import authService from "../auth/auth.service";
 
 class MeetupsService {
   async getPage(queryParams: Record<string, string>) {
@@ -24,7 +24,7 @@ class MeetupsService {
   async signUpFor(meetupId: string, authHeader: string) {
     const meetupToSignUp = await this.getById(meetupId);
 
-    const userId = getUserByJwt(authHeader).id;
+    const userId = authService.getUserByJwt(authHeader).id;
 
     if (meetupToSignUp.users.find((item) => item.userId == userId))
       throw BadRequestError("Already signed up");

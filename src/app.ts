@@ -3,12 +3,13 @@ import express from "express";
 import { envVars } from "@environment";
 import { logger } from "@logger";
 import meetupsRouter from "./meetups/meetups.router";
-import authRouter from "./auth/routers/auth.router";
-import checkIfTokenIsValid from "@authorization/checkIfTokenIsValid";
+import authRouter from "./auth/auth.router";
+import checkIfTokenIsValid from "./middleware/checkIfTokenIsValid";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { createResponse } from "@responses/createResponse";
 import { BadRequestError } from "@responses/httpErrors";
+import { UserController } from "./user/user.controller";
 
 const PORT = envVars.PORT || 4000;
 
@@ -19,7 +20,7 @@ meetupsApp.use(express.json());
 meetupsApp.use(cookieParser());
 meetupsApp.use("/auth", authRouter);
 meetupsApp.use("/meetups", checkIfTokenIsValid, meetupsRouter);
-//meetupsApp.use("/user", checkIfTokenIsValid, getUserByJwt);
+meetupsApp.use("/user", checkIfTokenIsValid, UserController.getUser);
 meetupsApp.all("*", (req, _, next) => {
   next(BadRequestError(`Cannot find ${req.originalUrl}`));
 });

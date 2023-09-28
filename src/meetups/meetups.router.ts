@@ -3,7 +3,7 @@ import { validateRequestProperty } from "@validators/validateRequestProperty";
 import { CreateMeetupSchema } from "@schemas/createMeetup.schema";
 import { UpdateMeetupSchema } from "@schemas/updateMeetup.schema";
 import { MeetupIdSchema } from "@schemas/meetupId.schema";
-import { checkRole } from "@authorization/checkRole";
+import { checkRole } from "../middleware/checkRole";
 import { Roles } from "@authInterfaces/roles.enum";
 import { PaginationQueryParamsSchema } from "@schemas/paginationQueryParams.schema";
 import { MeetupsController } from "./meetups.controller";

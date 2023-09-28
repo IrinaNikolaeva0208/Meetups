@@ -2,22 +2,20 @@ import { Router } from "express";
 import { validateRequestProperty } from "@validators/validateRequestProperty";
 import { CreateUserSchema } from "@schemas/createUser.schema";
 import { LoginSchema } from "@schemas/loginSchema";
-import { signUp } from "../middleware/functions/signUp";
-import { authenticate } from "../middleware/functions/authenticate";
-import { refreshAccessToken } from "../middleware/functions/refreshAccessToken";
+import { AuthController } from "./auth.controller";
 
 const authRouter = Router();
 
 authRouter.post(
   "/signup",
   validateRequestProperty("body", CreateUserSchema),
-  signUp
+  AuthController.signUp
 );
 authRouter.post(
   "/login",
   validateRequestProperty("body", LoginSchema),
-  authenticate
+  AuthController.login
 );
-authRouter.post("/refresh", refreshAccessToken);
+authRouter.post("/refresh", AuthController.refreshToken);
 
 export default authRouter;

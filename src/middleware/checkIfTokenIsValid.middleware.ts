@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import passport from "../passport/passport";
-import { createResponse } from "@responses/createResponse";
+import passport from "../auth/passport/passport";
+import { UnauthorizedError } from "@responses/httpErrors";
 
 export default function checkIfTokenIsValid(
   req: Request,
@@ -11,10 +11,12 @@ export default function checkIfTokenIsValid(
     "jwt-access",
     { session: false },
     (err, userPayload, info) => {
-      if (err || !userPayload) {
-        const response = createResponse(401, info.message);
-        res.status(response.statusCode).json(response);
-      } else next();
+      try {
+        if (err || !userPayload) throw UnauthorizedError(info.message);
+        next();
+      } catch (err) {
+        next(err);
+      }
     }
   )(req, res, next);
 }
