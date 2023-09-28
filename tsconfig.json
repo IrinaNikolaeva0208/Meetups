@@ -9,14 +9,9 @@
     "noImplicitAny": false,
     "skipLibCheck": true,   
     "paths": {
-      "@authorization/*" : ["./src/auth/middleware/functions/*"],
-      "@schemas/*" : ["./src/validation/schemas/*"],
-      "@database/*" : ["./src/utils/database/*"],
-      "@responses/*" : ["./src/utils/responses/*"],
-      "@meetupInterfaces/*": ["./src/meetups/interfaces/*"],
-      "@authInterfaces/*": ["./src/auth/interfaces/*"],
-      "@authClasses/*": ["./src/auth/middleware/classes/*"],
-      "@validators/*" : ["./src/validation/middleware/*"],
+      "@utils/*" : ["./src/utils/*"],
+      "@meetupInterfaces": ["./src/meetups/interfaces/index"],
+      "@authInterfaces": ["./src/auth/interfaces/index"]
     }                            
   }
 }
