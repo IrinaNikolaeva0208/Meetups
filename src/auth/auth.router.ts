@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { validateRequestProperty } from "@validators/validateRequestProperty";
+import { validateRequestProperty } from "../middleware/validateRequestProperty.middleware";
 import { CreateUserSchema } from "@schemas/createUser.schema";
-import { LoginSchema } from "@schemas/loginSchema";
+import { LoginSchema } from "@schemas/login.schema";
 import { AuthController } from "./auth.controller";
 
 const authRouter = Router();

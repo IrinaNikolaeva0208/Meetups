@@ -14,13 +14,10 @@
     "migrate:init": "npx prisma migrate dev --name init"
   },
   "_moduleAliases": {
-    "@authorization": "./dist/auth/middleware/functions",
-    "@schemas": "./dist/validation/schemas",
     "@database": "./dist/utils/database",
     "@responses": "./dist/utils/responses",
     "@meetupInterfaces": "./dist/meetups/interfaces",
     "@authInterfaces": "./dist/auth/interfaces",
-    "@authClasses": "./dist/auth/middleware/classes",
     "@validators": "./dist/validation/middleware",
     "@environment": "./dist/utils/environment/variables",
     "@logger": "./dist/utils/logger/logger"

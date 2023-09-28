@@ -4,7 +4,7 @@ import { envVars } from "@environment";
 import { logger } from "@logger";
 import meetupsRouter from "./meetups/meetups.router";
 import authRouter from "./auth/auth.router";
-import checkIfTokenIsValid from "./middleware/checkIfTokenIsValid";
+import checkIfTokenIsValid from "./middleware/checkIfTokenIsValid.middleware";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { createResponse } from "@responses/createResponse";
