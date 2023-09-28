@@ -7,9 +7,9 @@ import authRouter from "./auth/auth.router";
 import checkIfTokenIsValid from "./middleware/checkIfTokenIsValid.middleware";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import { createResponse } from "@responses/createResponse";
-import { BadRequestError } from "@responses/httpErrors";
 import { UserController } from "./user/user.controller";
+import { sendErrorInCaseOfWrongRoute } from "./middleware/sendErrorInCaseOfWrongRoute.middleware";
+import { handleErrors } from "./middleware/handleErrors.middleware";
 
 const PORT = envVars.PORT || 4000;
 
@@ -21,14 +21,7 @@ meetupsApp.use(cookieParser());
 meetupsApp.use("/auth", authRouter);
 meetupsApp.use("/meetups", checkIfTokenIsValid, meetupsRouter);
 meetupsApp.use("/user", checkIfTokenIsValid, UserController.getUser);
-meetupsApp.all("*", (req, _, next) => {
-  next(BadRequestError(`Cannot find ${req.originalUrl}`));
-});
-meetupsApp.use((err, _, res, next) => {
-  if (res.headersSent) return next(err);
-  const response = createResponse(err.status || err.statusCode || 500, err);
-  res.status(response.statusCode).json(response);
-  response.statusCode < 500 ? logger.warn(err) : logger.error(err);
-});
+meetupsApp.all("*", sendErrorInCaseOfWrongRoute);
+meetupsApp.use(handleErrors);
 
 meetupsApp.listen(PORT, () => logger.info("Server started on port " + PORT));

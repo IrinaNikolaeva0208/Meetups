@@ -9,12 +9,10 @@
     "noImplicitAny": false,
     "skipLibCheck": true,   
     "paths": {
-      "@schemas/*" : ["./src/validation/schemas/*"],
       "@database/*" : ["./src/utils/database/*"],
       "@responses/*" : ["./src/utils/responses/*"],
       "@meetupInterfaces/*": ["./src/meetups/interfaces/*"],
       "@authInterfaces/*": ["./src/auth/interfaces/*"],
-      "@validators/*" : ["./src/validation/middleware/*"],
       "@environment" : ["./src/utils/environment/variables"],
       "@logger" : ["./src/utils/logger/logger"]
     }                            
