@@ -1,4 +1,4 @@
-import { ForbiddenError } from "@responses/httpErrors";
+import { ForbiddenError } from "@utils/errors";
 import { NextFunction, Request } from "express";
 import authService from "../auth/auth.service";
 

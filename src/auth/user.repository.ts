@@ -1,4 +1,4 @@
-import { database } from "@database/prisma.client";
+import { database } from "@utils/database";
 
 class UserRepository {
   async findById(id: string) {

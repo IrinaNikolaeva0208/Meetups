@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import Joi from "joi";
-import { BadRequestError } from "@responses/httpErrors";
+import { BadRequestError } from "@utils/errors";
 
 export function validateRequestProperty(
   property: keyof Request,

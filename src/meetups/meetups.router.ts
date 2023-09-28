@@ -1,11 +1,12 @@
 import { Router } from "express";
-import { validateRequestProperty } from "../middleware/validateRequestProperty.middleware";
-import { CreateMeetupSchema } from "./schemas/createMeetup.schema";
-import { UpdateMeetupSchema } from "./schemas/updateMeetup.schema";
-import { MeetupIdSchema } from "./schemas/meetupId.schema";
-import { checkRole } from "../middleware/checkRole.middleware";
-import { Roles } from "@authInterfaces/roles.enum";
-import { PaginationQueryParamsSchema } from "./schemas/paginationQueryParams.schema";
+import { validateRequestProperty, checkRole } from "../middleware";
+import {
+  CreateMeetupSchema,
+  MeetupIdSchema,
+  UpdateMeetupSchema,
+  PaginationQueryParamsSchema,
+} from "./schemas";
+import { Roles } from "@authInterfaces";
 import { MeetupsController } from "./meetups.controller";
 
 const meetupsRouter = Router();

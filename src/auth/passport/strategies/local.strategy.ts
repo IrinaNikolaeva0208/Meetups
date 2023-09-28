@@ -1,9 +1,8 @@
 import userRepository from "../../user.repository";
 import { Strategy as LocalStrategy } from "passport-local";
 import * as bcrypt from "bcrypt";
-import { UnauthorizedError } from "@responses/httpErrors";
 
-export default new LocalStrategy(
+export const localStrategy = new LocalStrategy(
   {
     usernameField: "login",
   },

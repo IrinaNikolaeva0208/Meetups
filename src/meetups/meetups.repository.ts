@@ -1,8 +1,10 @@
-import { database } from "@database/prisma.client";
-import { paginationOptions } from "@meetupInterfaces/paginationOptions";
-import { PaginationFilter } from "@meetupInterfaces/paginationFilter";
-import { CreateMeetupBody } from "@meetupInterfaces/createMeetupRequestOptions";
-import { UpdateOptions } from "@meetupInterfaces/updateOptions";
+import { database } from "@utils/database";
+import {
+  paginationOptions,
+  PaginationFilter,
+  CreateMeetupBody,
+  UpdateOptions,
+} from "@meetupInterfaces";
 
 class MeetupsRepository {
   async findById(id: string) {

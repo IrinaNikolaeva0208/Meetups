@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import passport from "../auth/passport/passport";
-import { UnauthorizedError } from "@responses/httpErrors";
+import { UnauthorizedError } from "@utils/errors";
 
-export default function checkIfTokenIsValid(
+export function checkIfTokenIsValid(
   req: Request,
   res: Response,
   next: NextFunction

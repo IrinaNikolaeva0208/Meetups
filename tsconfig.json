@@ -9,12 +9,9 @@
     "noImplicitAny": false,
     "skipLibCheck": true,   
     "paths": {
-      "@database/*" : ["./src/utils/database/*"],
-      "@responses/*" : ["./src/utils/responses/*"],
-      "@meetupInterfaces/*": ["./src/meetups/interfaces/*"],
-      "@authInterfaces/*": ["./src/auth/interfaces/*"],
-      "@environment" : ["./src/utils/environment/variables"],
-      "@logger" : ["./src/utils/logger/logger"]
+      "@utils/*" : ["./src/utils/*"],
+      "@meetupInterfaces": ["./src/meetups/interfaces/index"],
+      "@authInterfaces": ["./src/auth/interfaces/index"]
     }                            
   }
 }

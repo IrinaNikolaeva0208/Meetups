@@ -1,7 +1,7 @@
-import { CreateUserBody } from "@authInterfaces/CreateUserBody";
+import { CreateUserBody } from "@authInterfaces";
 import userRepository from "./user.repository";
-import { ConflictError } from "@responses/httpErrors";
-import { envVars } from "@environment";
+import { ConflictError } from "@utils/errors";
+import { envVars } from "@utils/environment";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 

@@ -1,6 +1,6 @@
 import meetupsRepository from "./meetups.repository";
-import { NotFoundError, BadRequestError } from "@responses/httpErrors";
-import { CreateMeetupBody } from "@meetupInterfaces/createMeetupRequestOptions";
+import { NotFoundError, BadRequestError } from "@utils/errors";
+import { CreateMeetupBody } from "@meetupInterfaces";
 import { formPaginationOptions } from "./helpers/formPaginationOptions";
 import authService from "../auth/auth.service";
 

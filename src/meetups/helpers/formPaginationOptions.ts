@@ -1,4 +1,4 @@
-import { paginationOptions } from "@meetupInterfaces/paginationOptions";
+import { paginationOptions } from "@meetupInterfaces";
 
 export function formPaginationOptions(queryObject: Record<string, string>) {
   const { offset, limit, sort, order, time, place, tags, search } = queryObject;

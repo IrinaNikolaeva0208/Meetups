@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import authService from "./auth.service";
 import passport from "./passport/passport";
-import { UnauthorizedError } from "@responses/httpErrors";
+import { UnauthorizedError } from "@utils/errors";
 
 export class AuthController {
   static async signUp(req: Request, res: Response, next: NextFunction) {

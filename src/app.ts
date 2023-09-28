@@ -1,15 +1,17 @@
 import "module-alias/register";
 import express from "express";
-import { envVars } from "@environment";
-import { logger } from "@logger";
+import { envVars } from "@utils/environment";
+import { logger } from "@utils/logger";
 import meetupsRouter from "./meetups/meetups.router";
 import authRouter from "./auth/auth.router";
-import checkIfTokenIsValid from "./middleware/checkIfTokenIsValid.middleware";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { UserController } from "./user/user.controller";
-import { sendErrorInCaseOfWrongRoute } from "./middleware/sendErrorInCaseOfWrongRoute.middleware";
-import { handleErrors } from "./middleware/handleErrors.middleware";
+import {
+  handleErrors,
+  sendErrorInCaseOfWrongRoute,
+  checkIfTokenIsValid,
+} from "./middleware";
 
 const PORT = envVars.PORT || 4000;
 

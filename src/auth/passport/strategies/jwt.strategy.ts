@@ -1,8 +1,8 @@
 import { Strategy, ExtractJwt } from "passport-jwt";
 import userRepository from "../../user.repository";
-import { UnauthorizedError } from "@responses/httpErrors";
+import { UnauthorizedError } from "@utils/errors";
 
-export default function JwtStrategy(secretOrKey: string) {
+export function JwtStrategy(secretOrKey: string) {
   const jwtOptions = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey,
