@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import authService from "./auth.service";
-import passport from "./passport/passport";
+import passport from "@utils/passport/passport";
 import { UnauthorizedError } from "@utils/errors";
+import { getUserByJwt } from "@utils/middleware";
 
 export class AuthController {
   static async signUp(req: Request, res: Response, next: NextFunction) {
@@ -57,5 +58,10 @@ export class AuthController {
         }
       }
     )(req, res, next);
+  }
+
+  static getUser(req: Request, res: Response) {
+    const user = getUserByJwt(req.headers.authorization);
+    res.status(200).json(user);
   }
 }

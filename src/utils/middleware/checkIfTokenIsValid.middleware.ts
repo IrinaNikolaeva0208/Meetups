@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import passport from "../auth/passport/passport";
+import passport from "../passport/passport";
 import { UnauthorizedError } from "@utils/errors";
 
 export function checkIfTokenIsValid(

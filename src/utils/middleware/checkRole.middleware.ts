@@ -1,11 +1,11 @@
 import { ForbiddenError } from "@utils/errors";
 import { NextFunction, Request } from "express";
-import authService from "../auth/auth.service";
+import { getUserByJwt } from "./getUserByJwt";
 
 export function checkRole(requiredRole: string) {
   return function (req: Request, _, next: NextFunction) {
     try {
-      const user = authService.getUserByJwt(req.headers.authorization);
+      const user = getUserByJwt(req.headers.authorization);
 
       if (user.role != requiredRole) throw ForbiddenError("Forbidden");
       next();

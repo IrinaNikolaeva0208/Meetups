@@ -10,6 +10,7 @@
     "skipLibCheck": true,   
     "paths": {
       "@utils/*" : ["./src/utils/*"],
+      "@auth/*":  ["./src/auth/*"],
       "@meetupInterfaces": ["./src/meetups/interfaces/index"],
       "@authInterfaces": ["./src/auth/interfaces/index"]
     }                            

@@ -16,7 +16,8 @@
   "_moduleAliases": {
     "@meetupInterfaces": "./dist/meetups/interfaces",
     "@authInterfaces": "./dist/auth/interfaces",
-    "@utils" : "./dist/utils"
+    "@utils" : "./dist/utils",
+    "@auth" : "./dist/auth"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.4",

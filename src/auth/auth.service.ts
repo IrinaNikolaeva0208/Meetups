@@ -1,5 +1,5 @@
 import { CreateUserBody } from "@authInterfaces";
-import userRepository from "./user.repository";
+import userRepository from "../utils/database/user.repository";
 import { ConflictError } from "@utils/errors";
 import { envVars } from "@utils/environment";
 import jwt from "jsonwebtoken";
@@ -37,12 +37,6 @@ class AuthService {
     });
 
     return accessToken;
-  }
-
-  getUserByJwt(authHeader: string) {
-    const currentUser = jwt.decode(authHeader.slice(7)) as jwt.JwtPayload;
-    delete currentUser.password;
-    return currentUser;
   }
 }
 

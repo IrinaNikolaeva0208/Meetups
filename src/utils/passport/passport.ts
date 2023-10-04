@@ -1,5 +1,5 @@
 import passport from "passport";
-import { envVars } from "../../utils/environment";
+import { envVars } from "../environment";
 import { localStrategy, JwtStrategy } from "./strategies";
 
 passport.use("local", localStrategy);

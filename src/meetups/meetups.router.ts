@@ -1,12 +1,12 @@
 import { Router } from "express";
-import { validateRequestProperty, checkRole } from "../middleware";
+import { validateRequestProperty, checkRole } from "@utils/middleware";
 import {
   CreateMeetupSchema,
   MeetupIdSchema,
   UpdateMeetupSchema,
   PaginationQueryParamsSchema,
 } from "./schemas";
-import { Roles } from "@authInterfaces";
+import { Roles } from "@utils/interfaces/roles.enum";
 import { MeetupsController } from "./meetups.controller";
 
 const meetupsRouter = Router();

@@ -1,7 +1,8 @@
 import { Router } from "express";
-import { validateRequestProperty } from "../middleware";
+import { validateRequestProperty } from "@utils/middleware";
 import { CreateUserSchema, LoginSchema } from "./schemas";
 import { AuthController } from "./auth.controller";
+import { checkIfTokenIsValid, getUserByJwt } from "@utils/middleware";
 
 const authRouter = Router();
 
@@ -16,5 +17,6 @@ authRouter.post(
   AuthController.login
 );
 authRouter.post("/refresh", AuthController.refreshToken);
+authRouter.get("/user", checkIfTokenIsValid, getUserByJwt);
 
 export default authRouter;

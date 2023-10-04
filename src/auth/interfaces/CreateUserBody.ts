@@ -1,4 +1,4 @@
-import { Roles } from "./roles.enum";
+import { Roles } from "@utils/interfaces/roles.enum";
 
 export interface CreateUserBody {
   login: string;
