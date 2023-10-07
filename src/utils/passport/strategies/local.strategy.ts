@@ -1,4 +1,4 @@
-import userRepository from "@utils/database/user.repository";
+import { userRepository } from "@utils/repositories";
 import { Strategy as LocalStrategy } from "passport-local";
 import * as bcrypt from "bcrypt";
 

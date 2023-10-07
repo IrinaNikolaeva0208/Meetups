@@ -4,7 +4,7 @@ import {
   PaginationFilter,
   CreateMeetupBody,
   UpdateOptions,
-} from "@meetupInterfaces";
+} from "./interfaces";
 
 class MeetupsRepository {
   async findById(id: string) {

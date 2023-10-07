@@ -1,15 +1,46 @@
 version: '3.9'
 
 services:
-  app:
-    build: .
+  auth:
+    build: 
+      context: .
+      args: 
+        SERVICE_NAME: "auth"
     restart: always
     networks:
       - app-network
     ports:
-      - "${PORT}:${PORT}"
+      - "${AUTH_PORT}:${AUTH_PORT}"
     depends_on:
       - postgres
+ 
+  meetups:
+    build: 
+      context: .
+      args: 
+        SERVICE_NAME: "meetups"
+    restart: always
+    networks:
+      - app-network
+    ports:
+      - "${MEETUPS_PORT}:${MEETUPS_PORT}"
+    depends_on:
+      - postgres
+
+  gateway:
+    build: 
+      context: .
+      args: 
+        SERVICE_NAME: "gateway"
+    restart: always
+    networks:
+      - app-network
+    ports:
+      - "${GATEWAY_PORT}:${GATEWAY_PORT}"
+    depends_on:
+      - meetups
+      - auth
+  
   postgres:
     image: postgres:14-alpine
     restart: always

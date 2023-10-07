@@ -1,6 +1,6 @@
 import meetupsRepository from "./meetups.repository";
 import { NotFoundError, BadRequestError } from "@utils/errors";
-import { CreateMeetupBody } from "@meetupInterfaces";
+import { CreateMeetupBody } from "./interfaces";
 import { formPaginationOptions } from "./helpers/formPaginationOptions";
 import { getUserByJwt } from "@utils/middleware";
 
