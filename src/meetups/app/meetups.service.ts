@@ -2,7 +2,7 @@ import meetupsRepository from "./meetups.repository";
 import { NotFoundError, BadRequestError } from "@utils/errors";
 import { CreateMeetupBody } from "./interfaces";
 import { formPaginationOptions } from "./helpers/formPaginationOptions";
-import { getUserByJwt } from "@utils/middleware";
+import { channel } from "./rabbitmq";
 
 class MeetupsService {
   async getPage(queryParams: Record<string, string>) {
@@ -24,7 +24,11 @@ class MeetupsService {
   async signUpFor(meetupId: string, authHeader: string) {
     const meetupToSignUp = await this.getById(meetupId);
 
-    const userId = getUserByJwt(authHeader).id;
+    channel.sendToQueue("get.user", Buffer.from(authHeader));
+    let userId;
+    while (!userId)
+      userId = await channel.get("result.token", { noAck: false });
+    userId = JSON.parse(userId.content).id;
 
     if (meetupToSignUp.users.find((item) => item.userId == userId))
       throw BadRequestError("Already signed up");

@@ -5,7 +5,9 @@ import { logger } from "@utils/logger";
 import meetupsRouter from "./meetups.router";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import { handleErrors, checkIfTokenIsValid } from "@utils/middleware";
+import { handleErrors, sendErrorInCaseOfWrongRoute } from "@utils/middleware";
+import "./rabbitmq";
+import { isAuthenticated } from "./middleware";
 
 const PORT = envVars.MEETUPS_PORT;
 
@@ -14,7 +16,8 @@ const meetupsApp = express();
 meetupsApp.use(cors());
 meetupsApp.use(express.json());
 meetupsApp.use(cookieParser());
-meetupsApp.use("/", checkIfTokenIsValid, meetupsRouter);
+meetupsApp.use("/", isAuthenticated, meetupsRouter);
+meetupsApp.all("*", sendErrorInCaseOfWrongRoute);
 meetupsApp.use(handleErrors);
 
 meetupsApp.listen(PORT, () =>

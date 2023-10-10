@@ -5,7 +5,8 @@ import { logger } from "@utils/logger";
 import authRouter from "./auth.router";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import { handleErrors } from "@utils/middleware";
+import { handleErrors, sendErrorInCaseOfWrongRoute } from "@utils/middleware";
+import "./rabbitmq";
 
 const PORT = envVars.AUTH_PORT;
 
@@ -15,6 +16,7 @@ authApp.use(cors());
 authApp.use(express.json());
 authApp.use(cookieParser());
 authApp.use("/", authRouter);
+authApp.all("*", sendErrorInCaseOfWrongRoute);
 authApp.use(handleErrors);
 
 authApp.listen(PORT, () => logger.info("Auth service started on port " + PORT));

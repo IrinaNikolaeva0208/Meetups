@@ -13,6 +13,7 @@ services:
       - "${AUTH_PORT}:${AUTH_PORT}"
     depends_on:
       - postgres
+      - rabbitmq
  
   meetups:
     build: 
@@ -26,6 +27,7 @@ services:
       - "${MEETUPS_PORT}:${MEETUPS_PORT}"
     depends_on:
       - postgres
+      - rabbitmq
 
   gateway:
     build: 
@@ -52,6 +54,16 @@ services:
       - .env
     volumes:
       - app-volume:/app
+    depends_on:
+      - rabbitmq
+  
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - "${RABBIT_PORT}:${RABBIT_PORT}"
+      - "${WEB_RABBIT_PORT}:${WEB_RABBIT_PORT}"
+    networks:
+      - app-network
 
 networks:
   app-network:

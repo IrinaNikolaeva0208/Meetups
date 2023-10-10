@@ -1,5 +1,5 @@
 import { Strategy, ExtractJwt } from "passport-jwt";
-import { userRepository } from "@utils/repositories/user.repository";
+import { userRepository } from "../../user.repository";
 import { UnauthorizedError } from "@utils/errors";
 
 export function JwtStrategy(secretOrKey: string) {

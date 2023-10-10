@@ -2,7 +2,7 @@ import { Router } from "express";
 import { validateRequestProperty } from "@utils/middleware";
 import { CreateUserSchema, LoginSchema } from "./schemas";
 import { AuthController } from "./auth.controller";
-import { checkIfTokenIsValid, getUserByJwt } from "@utils/middleware";
+import { checkIfTokenIsValid, getUserByJwt } from "./middleware";
 
 const authRouter = Router();
 

@@ -5,7 +5,7 @@ export function handleErrors(err, _, res, next) {
 
   const response = {
     statusCode: err.status || err.statusCode || 500,
-    error: err,
+    error: err.message || err,
   };
 
   res.status(response.statusCode).json(response);

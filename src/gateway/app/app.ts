@@ -3,8 +3,7 @@ import express from "express";
 import { createProxyMiddleware } from "http-proxy-middleware";
 import { envVars } from "@utils/environment";
 import { logger } from "@utils/logger";
-import { sendErrorInCaseOfWrongRoute } from "@utils/middleware";
-import { handleErrors } from "@utils/middleware";
+import { sendErrorInCaseOfWrongRoute, handleErrors } from "@utils/middleware";
 import cors from "cors";
 
 const PORT = envVars.GATEWAY_PORT;
@@ -13,7 +12,7 @@ const gateway = express();
 
 gateway.use(cors());
 gateway.use(
-  "/auth/*",
+  "/auth",
   createProxyMiddleware({
     target: `http://auth:${envVars.AUTH_PORT}`,
     changeOrigin: true,
@@ -23,7 +22,7 @@ gateway.use(
   })
 );
 gateway.use(
-  "/meetups*",
+  "/meetups",
   createProxyMiddleware({
     target: `http://meetups:${envVars.MEETUPS_PORT}`,
     changeOrigin: true,

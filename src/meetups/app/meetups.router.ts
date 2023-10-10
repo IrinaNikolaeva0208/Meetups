@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { validateRequestProperty, checkRole } from "@utils/middleware";
+import { validateRequestProperty } from "@utils/middleware";
 import {
   CreateMeetupSchema,
   MeetupIdSchema,
@@ -8,6 +8,7 @@ import {
 } from "./schemas";
 import { Roles } from "@utils/interfaces/roles.enum";
 import { MeetupsController } from "./meetups.controller";
+import { hasRequiredRole } from "./middleware";
 
 const meetupsRouter = Router();
 
@@ -18,7 +19,7 @@ meetupsRouter.get(
 );
 meetupsRouter.post(
   "/",
-  checkRole(Roles.meetup_organizer),
+  hasRequiredRole(Roles.meetup_organizer),
   validateRequestProperty("body", CreateMeetupSchema),
   MeetupsController.createMeetup
 );
@@ -29,14 +30,14 @@ meetupsRouter.get(
 );
 meetupsRouter.patch(
   "/:id",
-  checkRole(Roles.meetup_organizer),
+  hasRequiredRole(Roles.meetup_organizer),
   validateRequestProperty("params", MeetupIdSchema),
   validateRequestProperty("body", UpdateMeetupSchema),
   MeetupsController.updateMeetup
 );
 meetupsRouter.delete(
   "/:id",
-  checkRole(Roles.meetup_organizer),
+  hasRequiredRole(Roles.meetup_organizer),
   validateRequestProperty("params", MeetupIdSchema),
   MeetupsController.deleteMeetup
 );

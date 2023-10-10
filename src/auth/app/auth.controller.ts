@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import authService from "./auth.service";
-import passport from "@utils/passport/passport";
+import passport from "./passport/passport";
 import { UnauthorizedError } from "@utils/errors";
-import { getUserByJwt } from "@utils/middleware";
+import { getUserByJwt } from "./middleware";
 
 export class AuthController {
   static async signUp(req: Request, res: Response, next: NextFunction) {

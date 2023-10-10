@@ -1,5 +1,5 @@
 import { CreateUserBody } from "./interfaces";
-import { userRepository } from "@utils/repositories";
+import { userRepository } from "./user.repository";
 import { ConflictError } from "@utils/errors";
 import { envVars } from "@utils/environment";
 import jwt from "jsonwebtoken";
