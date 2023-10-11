@@ -12,6 +12,10 @@ class UserRepository {
   async create(body) {
     return await database.user.create({ data: body });
   }
+
+  async findByProviderId(providerId: string) {
+    return await database.user.findUnique({ where: { providerId } });
+  }
 }
 
 export const userRepository = new UserRepository();
