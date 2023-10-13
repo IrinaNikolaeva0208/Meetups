@@ -40,7 +40,7 @@ export class AuthController {
     passport.authenticate("google", {
       scope: "profile",
       session: false,
-      state: JSON.stringify(req.query),
+      state: encodeURIComponent(JSON.stringify(req.body)),
     })(req, res, next);
   }
 

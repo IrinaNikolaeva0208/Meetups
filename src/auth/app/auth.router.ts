@@ -16,9 +16,9 @@ authRouter.post(
   AuthController.login
 );
 authRouter.post("/refresh", AuthController.refreshToken);
-authRouter.get(
+authRouter.post(
   "/google",
-  validateRequestProperty("query", GoogleAuthSchema),
+  validateRequestProperty("body", GoogleAuthSchema),
   AuthController.signInWithGoogle
 );
 authRouter.get("/google/callback", AuthController.getTokensFromGoogle);
