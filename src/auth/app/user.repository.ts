@@ -1,4 +1,6 @@
-import { database } from "@utils/database";
+import { PrismaClient } from "@prisma/client";
+
+export const database = new PrismaClient();
 
 class UserRepository {
   async findById(id: string) {

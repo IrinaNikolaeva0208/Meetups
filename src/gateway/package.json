@@ -4,7 +4,7 @@
   "main": "app.js",
   "license": "MIT",
   "scripts": {
-    "build": "npx tsc && prisma generate && npx prisma migrate deploy",
+    "build": "npx tsc && npx prisma migrate deploy",
     "start": "yarn run build && node ./dist/app.js"
   },"_moduleAliases": {
     "@utils": "./dist/utils"
