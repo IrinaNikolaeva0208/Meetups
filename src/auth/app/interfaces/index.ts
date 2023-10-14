@@ -1,1 +1,2 @@
-export * from "./CreateUserBody";
+export * from "./UserBody";
+export * from "./UpdateProfileBody";

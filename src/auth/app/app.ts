@@ -6,6 +6,7 @@ import authRouter from "./auth.router";
 import cookieParser from "cookie-parser";
 import { handleErrors, sendErrorInCaseOfWrongRoute } from "@utils/middleware";
 import "./rabbitmq";
+import profileRouter from "./profile.router";
 
 const PORT = envVars.AUTH_PORT;
 
@@ -13,7 +14,8 @@ const authApp = express();
 
 authApp.use(express.json());
 authApp.use(cookieParser());
-authApp.use("/", authRouter);
+authApp.use("/auth", authRouter);
+authApp.use("/profile", profileRouter);
 authApp.all("*", sendErrorInCaseOfWrongRoute);
 authApp.use(handleErrors);
 
