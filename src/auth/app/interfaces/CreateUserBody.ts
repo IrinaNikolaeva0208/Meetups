@@ -1,7 +1,6 @@
 import { Roles } from "@utils/interfaces/roles.enum";
 
-export interface CreateUserBody {
+export interface UserBody {
   login: string;
   password: string;
-  role: Roles;
 }

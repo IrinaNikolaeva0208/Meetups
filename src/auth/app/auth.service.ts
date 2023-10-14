@@ -1,17 +1,19 @@
-import { CreateUserBody } from "./interfaces";
+import { UserBody } from "./interfaces";
 import { userRepository } from "./user.repository";
 import { ConflictError } from "@utils/errors";
 import { envVars } from "@utils/environment";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import { Roles } from "@utils/interfaces/roles.enum";
 
 class AuthService {
-  async signUpUser(body: CreateUserBody) {
+  async signUpUser(body: UserBody) {
     const sameUser = await userRepository.findByLogin(body.login);
     if (sameUser) throw ConflictError("Login already in use");
 
     const newUser = await userRepository.create({
       ...body,
+      role: Roles.user,
       password: await bcrypt.hash(body.password, +envVars.CRYPT_SALT),
     });
     delete newUser.password;
