@@ -1,7 +1,7 @@
 import amqplib from "amqplib";
 import { logger } from "@utils/logger";
 import { envVars } from "@utils/environment";
-import { checkIfTokenIsValid, checkRole, getUserByJwt } from "../middleware";
+import { checkIfTokenIsValid, checkRole, getUserByJwt } from "../helpers";
 
 async function connect() {
   try {

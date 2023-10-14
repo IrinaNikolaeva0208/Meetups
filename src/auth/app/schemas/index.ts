@@ -1,2 +1,2 @@
-export * from "./createUser.schema";
-export * from "./login.schema";
+export * from "./userInput.schema";
+export * from "./userId.schema";

@@ -1,22 +1,28 @@
 import { Router } from "express";
 import { validateRequestProperty } from "@utils/middleware";
-import { CreateUserSchema, LoginSchema } from "./schemas";
+import { UserIdSchema, UserInputSchema } from "./schemas";
 import { AuthController } from "./auth.controller";
-import { checkIfTokenIsValid, getUserByJwt } from "./middleware";
 
 const authRouter = Router();
 
 authRouter.post(
   "/signup",
-  validateRequestProperty("body", CreateUserSchema),
+  validateRequestProperty("body", UserInputSchema),
   AuthController.signUp
 );
 authRouter.post(
   "/login",
-  validateRequestProperty("body", LoginSchema),
+  validateRequestProperty("body", UserInputSchema),
   AuthController.login
 );
 authRouter.post("/refresh", AuthController.refreshToken);
-authRouter.get("/user", checkIfTokenIsValid, getUserByJwt);
+authRouter.get("/google", AuthController.signInWithGoogle);
+authRouter.get("/google/callback", AuthController.getTokensFromGoogle);
+authRouter.patch(
+  "/add_organizer/:id",
+  validateRequestProperty("params", UserIdSchema),
+  AuthController.makeUserOrganizer
+);
+authRouter.get("/logout", AuthController.logout);
 
 export default authRouter;
