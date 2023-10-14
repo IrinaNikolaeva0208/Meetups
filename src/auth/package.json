@@ -4,8 +4,10 @@
   "main": "app.js",
   "license": "MIT",
   "scripts": {
-    "build": "npx tsc && npx prisma generate",
+    "build": "npx tsc && npx prisma generate && npx prisma db seed",
     "start": "yarn run build && node ./dist/app.js"
+  },"prisma": {
+    "seed": "ts-node prisma/seed.ts"
   },
   "_moduleAliases": {
     "@utils": "./dist/utils"

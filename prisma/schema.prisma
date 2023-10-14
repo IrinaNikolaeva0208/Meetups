@@ -43,5 +43,6 @@ model MeetupUser {
 
 enum Role {
   USER
+  ADMIN
   MEETUP_ORGANIZER
 }
