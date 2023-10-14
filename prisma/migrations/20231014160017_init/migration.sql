@@ -18,7 +18,7 @@ CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "login" TEXT,
     "password" TEXT,
-    "role" "Role" NOT NULL,
+    "roles" "Role"[],
     "provider" TEXT,
     "providerId" TEXT,
     "name" TEXT,

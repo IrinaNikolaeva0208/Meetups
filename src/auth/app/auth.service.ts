@@ -13,7 +13,7 @@ class AuthService {
 
     const newUser = await userRepository.create({
       ...body,
-      role: Roles.user,
+      roles: [Roles.user],
       password: await bcrypt.hash(body.password, +envVars.CRYPT_SALT),
     });
     delete newUser.password;

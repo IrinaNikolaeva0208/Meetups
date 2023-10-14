@@ -15,7 +15,7 @@ export const GoogleStrategy = new Strategy(
         provider: profile.provider,
         providerId: profile.id,
         name: profile.name.givenName,
-        role: Roles.user,
+        roles: [Roles.user],
       };
 
       const authorizedUser =

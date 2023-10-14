@@ -14,7 +14,7 @@ async function main() {
         envVars.ADMIN_PASSWORD as string,
         +(envVars.CRYPT_SALT as string)
       ),
-      role: Roles.admin,
+      roles: [Roles.admin, Roles.meetup_organizer, Roles.user],
     },
   });
 }
