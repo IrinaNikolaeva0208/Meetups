@@ -1,6 +1,6 @@
 import { UserBody } from "./interfaces";
 import { userRepository } from "./user.repository";
-import { ConflictError } from "@utils/errors";
+import { ConflictError, NotFoundError } from "@utils/errors";
 import { envVars } from "@utils/environment";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
@@ -39,6 +39,17 @@ class AuthService {
     });
 
     return accessToken;
+  }
+
+  async addOrganizerRoleToUserWithId(id: string) {
+    const userToAddRole = await userRepository.findById(id);
+    if (!userToAddRole) throw NotFoundError("User not found");
+
+    const newMeetupOrganizer = await userRepository.addRole(
+      id,
+      Roles.meetup_organizer
+    );
+    return newMeetupOrganizer;
   }
 }
 

@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { Roles } from "@utils/interfaces/roles.enum";
 
 export const database = new PrismaClient();
 
@@ -17,6 +18,15 @@ class UserRepository {
 
   async findByProviderId(providerId: string) {
     return await database.user.findUnique({ where: { providerId } });
+  }
+
+  async addRole(id: string, role: Roles) {
+    const { roles } = await this.findById(id);
+    roles.push(role);
+    return await database.user.update({
+      where: { id },
+      data: { roles },
+    });
   }
 }
 

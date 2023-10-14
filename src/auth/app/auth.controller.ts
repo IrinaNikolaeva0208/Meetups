@@ -1,7 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import authService from "./auth.service";
 import passport from "./passport/passport";
-import { UnauthorizedError } from "@utils/errors";
+import { ForbiddenError, UnauthorizedError } from "@utils/errors";
+import { checkRole } from "./helpers";
+import { Roles } from "@utils/interfaces/roles.enum";
 
 export class AuthController {
   static async signUp(req: Request, res: Response, next: NextFunction) {
@@ -89,6 +91,24 @@ export class AuthController {
         }
       }
     )(req, res, next);
+  }
+
+  static async makeUserOrganizer(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      if (!checkRole(req.headers.authorization, Roles.admin))
+        throw ForbiddenError("Admin role required");
+
+      const newMeetupOrganizer = await authService.addOrganizerRoleToUserWithId(
+        req.params.id
+      );
+      res.status(200).send(newMeetupOrganizer);
+    } catch (err) {
+      next(err);
+    }
   }
 
   static logout(req: Request, res: Response) {
