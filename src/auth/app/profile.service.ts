@@ -1,4 +1,4 @@
-import { getUserByJwt } from "./helpers";
+import { getUserByJwt } from "./middleware/helpers";
 import { UpdateProfileBody } from "./interfaces";
 import { userRepository } from "./user.repository";
 

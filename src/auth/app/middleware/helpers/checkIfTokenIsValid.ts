@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { userRepository } from "../user.repository";
+import { userRepository } from "../../user.repository";
 import { envVars } from "@utils/environment";
 
 export async function checkIfTokenIsValid(authHeader: string) {
