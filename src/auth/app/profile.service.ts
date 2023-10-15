@@ -15,6 +15,9 @@ class ProfileService {
     updateUserData: UpdateProfileBody
   ) {
     const { id } = getUserByJwt(authHeader);
+
+    if (updateUserData.age) updateUserData.age = +updateUserData.age;
+
     const updatedProfile = await userRepository.update(id, updateUserData);
     delete updatedProfile.password;
     return updatedProfile;
