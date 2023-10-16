@@ -7,4 +7,5 @@ export interface UpdateProfileBody {
   name?: string;
   age?: number;
   sex?: Sex;
+  photo?: string;
 }
