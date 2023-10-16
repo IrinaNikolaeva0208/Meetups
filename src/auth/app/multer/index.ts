@@ -3,6 +3,7 @@ import multer from "multer";
 import { BadRequestError } from "@utils/errors";
 import { mkdir } from "fs";
 import { logger } from "@utils/logger";
+import { cloudStorage } from "./cloudinary/cloudinary.config";
 
 mkdir("./avatars", (err) => {
   if (err) logger.error(err);
@@ -10,15 +11,7 @@ mkdir("./avatars", (err) => {
 });
 
 export const upload = multer({
-  storage: multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, "./avatars/");
-    },
-    filename: function (req, file, cb) {
-      const timestamp = Date.now();
-      cb(null, file.fieldname + "-" + timestamp + extname(file.originalname));
-    },
-  }),
+  storage: cloudStorage,
 
   fileFilter: function (req, file, callback) {
     const ext = extname(file.originalname).toLowerCase();
@@ -28,6 +21,7 @@ export const upload = multer({
 
     callback(null, true);
   },
+
   limits: {
     fileSize: 5 * 1024 * 1024,
   },
