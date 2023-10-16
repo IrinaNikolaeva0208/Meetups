@@ -16,9 +16,13 @@ gateway.use(
   createProxyMiddleware({
     target: `http://auth:${envVars.AUTH_PORT}`,
     changeOrigin: true,
-    pathRewrite: {
-      "^/auth": "",
-    },
+  })
+);
+gateway.use(
+  "/profile",
+  createProxyMiddleware({
+    target: `http://auth:${envVars.AUTH_PORT}`,
+    changeOrigin: true,
   })
 );
 gateway.use(

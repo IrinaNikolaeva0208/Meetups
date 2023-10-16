@@ -4,8 +4,11 @@ export function handleErrors(err, _, res, next) {
   if (res.headersSent) return next(err);
 
   const response = {
-    statusCode: err.status || err.statusCode || 500,
-    error: err.message || err,
+    statusCode:
+      err.message == "File too large"
+        ? 413
+        : err.status || err.statusCode || 500,
+    error: err,
   };
 
   res.status(response.statusCode).json(response);

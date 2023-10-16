@@ -28,6 +28,9 @@ model User {
   provider   String?
   providerId String?      @unique
   name       String?
+  age        Int?
+  sex        Sex?
+  photo      String?
   email      String?
   meetups    MeetupUser[]
 }
@@ -45,4 +48,9 @@ enum Role {
   USER
   ADMIN
   MEETUP_ORGANIZER
+}
+
+enum Sex {
+  MALE
+  FEMALE
 }

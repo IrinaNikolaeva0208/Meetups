@@ -1,6 +1,5 @@
 import { Strategy, ExtractJwt } from "passport-jwt";
 import { userRepository } from "../../user.repository";
-import { UnauthorizedError } from "@utils/errors";
 
 export function JwtStrategy(secretOrKey: string) {
   const jwtOptions = {
@@ -11,7 +10,7 @@ export function JwtStrategy(secretOrKey: string) {
   return new Strategy(jwtOptions, async (jwtPayload, done) => {
     const userWithAcceptedJwt = await userRepository.findById(jwtPayload.id);
 
-    if (!userWithAcceptedJwt) throw UnauthorizedError("Invalid token");
+    if (!userWithAcceptedJwt) done(true);
     done(null, userWithAcceptedJwt);
   });
 }

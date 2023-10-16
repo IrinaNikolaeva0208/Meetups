@@ -1,6 +1,9 @@
 -- CreateEnum
 CREATE TYPE "Role" AS ENUM ('USER', 'ADMIN', 'MEETUP_ORGANIZER');
 
+-- CreateEnum
+CREATE TYPE "Sex" AS ENUM ('MALE', 'FEMALE');
+
 -- CreateTable
 CREATE TABLE "Meetup" (
     "id" TEXT NOT NULL,
@@ -22,6 +25,9 @@ CREATE TABLE "User" (
     "provider" TEXT,
     "providerId" TEXT,
     "name" TEXT,
+    "age" INTEGER,
+    "sex" "Sex",
+    "photo" TEXT,
     "email" TEXT,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")

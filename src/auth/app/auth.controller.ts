@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import authService from "./auth.service";
 import passport from "./passport/passport";
 import { ForbiddenError, UnauthorizedError } from "@utils/errors";
-import { checkRole } from "./helpers";
+import { checkRole } from "./middleware/helpers";
 import { Roles } from "@utils/interfaces/roles.enum";
 
 export class AuthController {
@@ -76,7 +76,7 @@ export class AuthController {
       { session: false },
       async (err, userPayload, info) => {
         try {
-          if (err || !userPayload) throw UnauthorizedError(info.message);
+          if (err || !userPayload) throw UnauthorizedError("Invalid token");
 
           const newAccessToken = await authService.refreshAccessToken(
             userPayload
@@ -99,9 +99,6 @@ export class AuthController {
     next: NextFunction
   ) {
     try {
-      if (!checkRole(req.headers.authorization, Roles.admin))
-        throw ForbiddenError("Admin role required");
-
       const newMeetupOrganizer = await authService.addOrganizerRoleToUserWithId(
         req.params.id
       );
