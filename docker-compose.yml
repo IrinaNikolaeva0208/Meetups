@@ -44,7 +44,7 @@ services:
       - auth
   
   postgres:
-    image: postgres:14-alpine
+    image: postgis/postgis
     restart: always
     networks:
       - app-network
