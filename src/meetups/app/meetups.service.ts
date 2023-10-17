@@ -8,14 +8,18 @@ class MeetupsService {
   async getPage(queryParams: Record<string, string>) {
     const paginationOptions = formPaginationOptions(queryParams);
 
-    const results = await meetupsRepository.findMany(paginationOptions);
+    const results = await meetupsRepository.findMany(
+      paginationOptions.filter + " " + paginationOptions.sort,
+      +queryParams.limit,
+      +queryParams.offset
+    );
 
     return {
       data: results,
       pagination: {
-        total: await meetupsRepository.getNumberOfFiltered({
-          where: paginationOptions.where,
-        }),
+        total: await meetupsRepository.getNumberOfFiltered(
+          paginationOptions.filter || ""
+        ),
         ...queryParams,
       },
     };
@@ -43,8 +47,8 @@ class MeetupsService {
   async updateById(id: string, body) {
     const meetupToUpdate = await this.getById(id);
 
-    const data = { meetupToUpdate, ...body };
-    if (body.time) data.time = new Date(body.time).toISOString();
+    const data = { ...meetupToUpdate, ...body };
+    data.time = new Date(data.time).toISOString();
 
     return await meetupsRepository.updateById(id, data);
   }

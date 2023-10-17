@@ -2,11 +2,19 @@ import meetupsService from "./meetups.service";
 import { NextFunction, Request, Response } from "express";
 
 export class MeetupsController {
-  static async getPageOfMeetups(req: Request, res: Response) {
-    const meetupsPage = await meetupsService.getPage(
-      req.query as Record<string, string>
-    );
-    res.status(200).json(meetupsPage);
+  static async getPageOfMeetups(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const meetupsPage = await meetupsService.getPage(
+        req.query as Record<string, string>
+      );
+      res.status(200).json(meetupsPage);
+    } catch (err) {
+      next(err);
+    }
   }
 
   static async getMeetupById(req: Request, res: Response, next: NextFunction) {

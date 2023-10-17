@@ -3,6 +3,6 @@ export interface CreateMeetupBody {
   description: string;
   tags: string[];
   time: string;
-  longitude: number;
+  longtitude: number;
   latitude: number;
 }

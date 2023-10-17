@@ -1,10 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { randomUUID } from "crypto";
-import {
-  paginationOptions,
-  PaginationFilter,
-  CreateMeetupBody,
-} from "./interfaces";
+import { CreateMeetupBody } from "./interfaces";
 
 const database = new PrismaClient();
 
@@ -18,9 +14,8 @@ class MeetupsRepository {
         time = TO_TIMESTAMP(${
           updateOptions.time
         }, 'YYYY-MM-DD"T"HH24:MI:SS.MS"Z"'),
-        coordinates = ST_MakePoint(${
-          (updateOptions.longitude, updateOptions.latitude)
-        }, 4236)
+        coordinates = ST_MakePoint(
+          ${+updateOptions.longtitude}, ${+updateOptions.latitude})
     WHERE id = ${id}`;
 
     return await this.findById(id);
@@ -31,13 +26,13 @@ class MeetupsRepository {
     const meetupTimeIso = new Date(requestBody.time).toISOString();
 
     await database.$executeRaw`
-    INSERT INTO "Meetup" VALUES (${newId}, ${requestBody.name}, ${
-      requestBody.description
-    }, ${
+    INSERT INTO "Meetup" 
+    VALUES (${newId}, ${requestBody.name}, ${requestBody.description},
+    ${
       requestBody.tags
-    }, TO_TIMESTAMP(${meetupTimeIso}, 'YYYY-MM-DD"T"HH24:MI:SS.MS"Z"'), ST_MakePoint(${
-      (requestBody.longitude, requestBody.latitude)
-    }, 4236))`;
+    }, TO_TIMESTAMP(${meetupTimeIso}, 'YYYY-MM-DD"T"HH24:MI:SS.MS"Z"'), 
+    ST_MakePoint(
+          ${+requestBody.longtitude}, ${+requestBody.latitude}))`;
 
     return await this.findById(newId);
   }
@@ -52,7 +47,9 @@ class MeetupsRepository {
   async findById(id: string) {
     return (
       await database.$queryRaw`
-      SELECT id, name, description, tags, time, CAST(coordinates AS text) AS coordinates, COALESCE(array_agg("userId"), ARRAY[]::text[]) AS users 
+      SELECT id, name, description, tags, time,
+             CAST(coordinates AS text) AS coordinates, 
+             COALESCE(array_agg("userId"), ARRAY[]::text[]) AS users 
       FROM "Meetup" 
       LEFT JOIN "MeetupUser" on id = "meetupId"
       WHERE id = ${id}
@@ -60,12 +57,21 @@ class MeetupsRepository {
     )[0];
   }
 
-  async findMany(options: paginationOptions) {
-    return await database.meetup.findMany(options);
+  async findMany(options: string, limit: number, offset: number) {
+    return await database.$queryRawUnsafe(
+      'SELECT id, name, description, tags, time, CAST(coordinates AS text) AS coordinates FROM "Meetup" ' +
+        options +
+        " OFFSET $1 LIMIT $2",
+      offset,
+      limit
+    );
   }
 
-  async getNumberOfFiltered(filter: PaginationFilter) {
-    return await database.meetup.count(filter);
+  async getNumberOfFiltered(filter: string) {
+    const result = await database.$queryRawUnsafe(
+      `SELECT CAST(COUNT(*) AS text) AS count FROM "Meetup" ` + filter
+    );
+    return result[0].count;
   }
 
   async deleteById(id: string) {
