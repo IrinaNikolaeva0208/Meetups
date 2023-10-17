@@ -26,21 +26,13 @@ class MeetupsService {
 
     channel.sendToQueue("get.user", Buffer.from(authHeader));
     let userId;
-    while (!userId)
-      userId = await channel.get("result.token", { noAck: false });
-    userId = JSON.parse(userId.content).id;
+    while (!userId) userId = await channel.get("result.user", { noAck: false });
+    userId = JSON.parse(userId.content.toString()).id;
 
-    if (meetupToSignUp.users.find((item) => item.userId == userId))
+    if (meetupToSignUp.users.find((item) => item && item == userId))
       throw BadRequestError("Already signed up");
 
-    const signupData = {
-      data: {
-        users: { create: { user: { connect: { id: userId } } } },
-      },
-      include: { users: { select: { userId: true } } },
-    };
-
-    return await meetupsRepository.updateById(meetupId, signupData);
+    return await meetupsRepository.relateById(meetupId, userId);
   }
 
   async deleteById(id: string) {
@@ -49,14 +41,12 @@ class MeetupsService {
   }
 
   async updateById(id: string, body) {
-    await this.getById(id);
+    const meetupToUpdate = await this.getById(id);
 
-    const data = { ...body };
-    if (data.time) data.time = new Date(body.time).toISOString();
+    const data = { meetupToUpdate, ...body };
+    if (body.time) data.time = new Date(body.time).toISOString();
 
-    return await meetupsRepository.updateById(id, {
-      data,
-    });
+    return await meetupsRepository.updateById(id, data);
   }
 
   async getById(id: string) {

@@ -14,7 +14,7 @@ CREATE TABLE "Meetup" (
     "description" TEXT NOT NULL,
     "tags" TEXT[],
     "time" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "coordinates" geometry(Polygon, 4326) NOT NULL,
+    "coordinates" geometry(Point, 4326) NOT NULL,
 
     CONSTRAINT "Meetup_pkey" PRIMARY KEY ("id")
 );
