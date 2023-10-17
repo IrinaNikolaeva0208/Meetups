@@ -1,3 +1,6 @@
+-- CreateExtension
+CREATE EXTENSION IF NOT EXISTS "postgis";
+
 -- CreateEnum
 CREATE TYPE "Role" AS ENUM ('USER', 'ADMIN', 'MEETUP_ORGANIZER');
 
@@ -11,7 +14,7 @@ CREATE TABLE "Meetup" (
     "description" TEXT NOT NULL,
     "tags" TEXT[],
     "time" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "place" TEXT NOT NULL,
+    "coordinates" geometry(Point, 4326) NOT NULL,
 
     CONSTRAINT "Meetup_pkey" PRIMARY KEY ("id")
 );
@@ -40,6 +43,9 @@ CREATE TABLE "MeetupUser" (
 
     CONSTRAINT "MeetupUser_pkey" PRIMARY KEY ("userId","meetupId")
 );
+
+-- CreateIndex
+CREATE INDEX "location_idx" ON "Meetup" USING GIST ("coordinates");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_login_key" ON "User"("login");

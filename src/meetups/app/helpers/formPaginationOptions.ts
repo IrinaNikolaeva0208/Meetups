@@ -1,25 +1,35 @@
-import { paginationOptions } from "../interfaces";
+import { BadRequestError } from "@utils/errors";
 
 export function formPaginationOptions(queryObject: Record<string, string>) {
-  const { offset, limit, sort, order, time, place, tags, search } = queryObject;
+  const { sort, order, time, longtitude, latitude, tags, search } = queryObject;
 
-  const paginationOptions: paginationOptions = {
-    skip: +offset,
-    take: +limit,
-    orderBy: {},
-    where: {},
+  if ((longtitude && !latitude) || (latitude && !longtitude))
+    throw BadRequestError("Both latitude and longtitude required");
+
+  const filter = [];
+
+  if (time || tags || search || latitude) {
+    if (time) filter.push(`time = '${time}'`);
+    if (search) filter.push(`name LIKE '${search}%'`);
+    if (tags) {
+      const tagsForRequest = tags
+        .split(",")
+        .map((item) => `'${item}'`)
+        .join(",");
+      filter.push(`ARRAY[${tagsForRequest}] <@ tags`);
+    }
+    if (latitude)
+      filter.push(
+        `ST_Distance(coordinates::geography, ST_MakePoint(${longtitude}, ${latitude})::geography) < 100000`
+      );
+  }
+
+  let paginationOptions = {
+    filter: filter.length ? "WHERE " + filter.join(" AND ") : "",
+    sort: sort ? `ORDER BY ${sort} ${order || "ASC"}` : "",
   };
-  if (sort) paginationOptions.orderBy[sort] = order || "asc";
 
-  if (time)
-    paginationOptions.where.time = new Date(time as string).toISOString();
-  if (place) paginationOptions.where.place = place;
-  if (tags)
-    paginationOptions.where.tags = {
-      hasEvery: (tags as string).split(","),
-    };
-
-  if (search) paginationOptions.where["name"] = { contains: search };
+  console.log(paginationOptions);
 
   return paginationOptions;
 }
