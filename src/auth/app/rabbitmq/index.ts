@@ -31,7 +31,7 @@ async function connect() {
       const recieved = data.content.toString();
       channel.sendToQueue(
         "result.user",
-        Buffer.from(getUserByJwt(recieved).toString())
+        Buffer.from(JSON.stringify(getUserByJwt(recieved)))
       );
     });
 
