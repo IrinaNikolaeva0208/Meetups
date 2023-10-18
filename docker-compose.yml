@@ -14,7 +14,7 @@ services:
     depends_on:
       - postgres
       - rabbitmq
- 
+
   meetups:
     build: 
       context: .
@@ -65,8 +65,25 @@ services:
     networks:
       - app-network
 
+  elasticsearch:
+    image: elasticsearch:7.8.1
+    ports:
+      - 9200:9200
+    environment:
+      discovery.type: 'single-node'
+      xpack.security.enabled: 'true'
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
+
+  kibana:
+    image: kibana:7.8.1
+    volumes:
+      - ./kibana.yml:/usr/share/kibana/config/kibana.yml
+    ports:
+      - 5601:5601
+
 networks:
   app-network:
+  elastic:
 
 volumes:
   app-volume:
