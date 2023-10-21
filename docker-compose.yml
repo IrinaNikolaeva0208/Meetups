@@ -2,9 +2,9 @@ version: '3.9'
 
 services:
   auth:
-    build: 
+    build:
       context: .
-      args: 
+      args:
         SERVICE_NAME: "auth"
     restart: always
     networks:
@@ -16,9 +16,9 @@ services:
       - rabbitmq
 
   meetups:
-    build: 
+    build:
       context: .
-      args: 
+      args:
         SERVICE_NAME: "meetups"
     restart: always
     networks:
@@ -30,9 +30,9 @@ services:
       - rabbitmq
 
   gateway:
-    build: 
+    build:
       context: .
-      args: 
+      args:
         SERVICE_NAME: "gateway"
     restart: always
     networks:
@@ -42,12 +42,16 @@ services:
     depends_on:
       - meetups
       - auth
-  
+
   postgres:
-    image: postgis/postgis
+    container_name: postgres
+    build:
+      context: .
+      dockerfile: PostgresDockerfile
     restart: always
     networks:
       - app-network
+      - elastic
     ports:
       - "${DB_PORT}:${POSTGRES_PORT}"
     env_file:
@@ -56,7 +60,7 @@ services:
       - app-volume:/app
     depends_on:
       - rabbitmq
-  
+
   rabbitmq:
     image: rabbitmq:management
     ports:
@@ -66,24 +70,63 @@ services:
       - app-network
 
   elasticsearch:
-    image: elasticsearch:7.8.1
+    container_name: elasticsearch
+    image: elasticsearch:7.17.13
     ports:
-      - 9200:9200
+      - ${ELASTIC_PORT}:${ELASTIC_PORT}
     environment:
       discovery.type: 'single-node'
-      xpack.security.enabled: 'true'
       ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
+      xpack.security.enabled: false
+      bootstrap.memory_lock: true
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    networks:
+      - elastic
 
   kibana:
-    image: kibana:7.8.1
-    volumes:
-      - ./kibana.yml:/usr/share/kibana/config/kibana.yml
+    image: kibana:7.17.13
     ports:
-      - 5601:5601
+      - ${KIBANA_PORT}:${KIBANA_PORT}
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    networks:
+      - elastic
+    depends_on:
+      - elasticsearch
+
+  redis:
+    container_name: redis
+    image: 'redis:alpine'
+    ports:
+      - '${REDIS_PORT}:${REDIS_PORT}'
+    networks:
+      - elastic
+
+  pgsync:
+    build:
+      context: .
+      dockerfile: PgsyncDockerfile
+    environment:
+      - PG_USER=${POSTGRES_USER}
+      - PG_PASSWORD=${POSTGRES_PASSWORD}
+      - PG_DATABASE=meetups
+      - PG_HOST=postgres
+      - ELASTICSEARCH_HOST=elasticsearch
+      - REDIS_HOST=redis
+    networks:
+      - elastic
+      - app-network
+    depends_on:
+      - elasticsearch
+      - postgres
 
 networks:
   app-network:
   elastic:
+
 
 volumes:
   app-volume:

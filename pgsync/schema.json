@@ -1,0 +1,9 @@
+[
+  {
+    "database": "meetups",
+    "index": "meetups-index",
+    "nodes": {
+      "table": "meetup"
+    }
+  }
+]
