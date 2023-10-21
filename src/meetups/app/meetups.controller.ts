@@ -27,9 +27,13 @@ export class MeetupsController {
     }
   }
 
-  static async createMeetup(req: Request, res: Response) {
-    const createdMeetup = await meetupsService.create(req.body);
-    res.status(201).json(createdMeetup);
+  static async createMeetup(req: Request, res: Response, next: NextFunction) {
+    try {
+      const createdMeetup = await meetupsService.create(req.body);
+      res.status(201).json(createdMeetup);
+    } catch (err) {
+      next(err);
+    }
   }
 
   static async updateMeetup(req: Request, res: Response, next: NextFunction) {

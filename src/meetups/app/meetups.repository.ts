@@ -7,15 +7,15 @@ const database = new PrismaClient();
 class MeetupsRepository {
   async updateById(id: string, updateOptions: CreateMeetupBody) {
     await database.$executeRaw`
-    UPDATE "Meetup"
+    UPDATE "meetup"
     SET name = ${updateOptions.name},
         description = ${updateOptions.description},
         tags = ${updateOptions.tags},
         time = TO_TIMESTAMP(${
           updateOptions.time
         }, 'YYYY-MM-DD"T"HH24:MI:SS.MS"Z"'),
-        coordinates = ST_MakePoint(
-          ${+updateOptions.longtitude}, ${+updateOptions.latitude})
+        longtitude = ${+updateOptions.longtitude},
+        latitude = ${+updateOptions.latitude}
     WHERE id = ${id}`;
 
     return await this.findById(id);
@@ -26,20 +26,19 @@ class MeetupsRepository {
     const meetupTimeIso = new Date(requestBody.time).toISOString();
 
     await database.$executeRaw`
-    INSERT INTO "Meetup" 
+    INSERT INTO "meetup" 
     VALUES (${newId}, ${requestBody.name}, ${requestBody.description},
     ${
       requestBody.tags
     }, TO_TIMESTAMP(${meetupTimeIso}, 'YYYY-MM-DD"T"HH24:MI:SS.MS"Z"'), 
-    ST_MakePoint(
-          ${+requestBody.longtitude}, ${+requestBody.latitude}))`;
+   ${+requestBody.longtitude}, ${+requestBody.latitude})`;
 
     return await this.findById(newId);
   }
 
   async relateById(meetupId: string, userId: string) {
     await database.$executeRaw`
-    INSERT INTO "MeetupUser" VALUES (${userId}, ${meetupId})`;
+    INSERT INTO "meetupUser" VALUES (${userId}, ${meetupId})`;
 
     return await this.findById(meetupId);
   }
@@ -48,10 +47,10 @@ class MeetupsRepository {
     return (
       await database.$queryRaw`
       SELECT id, name, description, tags, time,
-             CAST(coordinates AS text) AS coordinates, 
+             longtitude, latitude, 
              COALESCE(array_agg("userId"), ARRAY[]::text[]) AS users 
-      FROM "Meetup" 
-      LEFT JOIN "MeetupUser" on id = "meetupId"
+      FROM "meetup" 
+      LEFT JOIN "meetupUser" on id = "meetupId"
       WHERE id = ${id}
       GROUP BY id`
     )[0];
@@ -59,9 +58,7 @@ class MeetupsRepository {
 
   async findMany(options: string, limit: number, offset: number) {
     return await database.$queryRawUnsafe(
-      'SELECT id, name, description, tags, time, CAST(coordinates AS text) AS coordinates FROM "Meetup" ' +
-        options +
-        " OFFSET $1 LIMIT $2",
+      'SELECT * FROM "meetup" ' + options + " OFFSET $1 LIMIT $2",
       offset,
       limit
     );
@@ -69,14 +66,14 @@ class MeetupsRepository {
 
   async getNumberOfFiltered(filter: string) {
     const result = await database.$queryRawUnsafe(
-      `SELECT CAST(COUNT(*) AS text) AS count FROM "Meetup" ` + filter
+      `SELECT CAST(COUNT(*) AS text) AS count FROM "meetup" ` + filter
     );
     return result[0].count;
   }
 
   async deleteById(id: string) {
     await database.$executeRaw`
-    DELETE FROM "Meetup"
+    DELETE FROM "meetup"
     WHERE id =${id}`;
   }
 }

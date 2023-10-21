@@ -19,9 +19,7 @@ export function formPaginationOptions(queryObject: Record<string, string>) {
       filter.push(`ARRAY[${tagsForRequest}] <@ tags`);
     }
     if (latitude)
-      filter.push(
-        `ST_Distance(coordinates::geography, ST_MakePoint(${longtitude}, ${latitude})::geography) < 100000`
-      );
+      filter.push(`longtitude = ${longtitude} AND latitude = ${latitude}`);
   }
 
   let paginationOptions = {
