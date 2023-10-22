@@ -9,5 +9,5 @@ export const PaginationQueryParamsSchema = Joi.object().keys({
   latitude: Joi.number().min(-90).max(90).optional(),
   longtitude: Joi.number().min(-180).max(180).optional(),
   tags: Joi.string().optional(),
-  search: Joi.string().alphanum().optional(),
+  name: Joi.string().alphanum().optional(),
 });

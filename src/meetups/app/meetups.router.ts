@@ -5,6 +5,7 @@ import {
   MeetupIdSchema,
   UpdateMeetupSchema,
   PaginationQueryParamsSchema,
+  FullTextSearchSchema,
 } from "./schemas";
 import { Roles } from "@utils/interfaces/roles.enum";
 import { MeetupsController } from "./meetups.controller";
@@ -22,6 +23,11 @@ meetupsRouter.post(
   hasRequiredRole(Roles.meetup_organizer),
   validateRequestProperty("body", CreateMeetupSchema),
   MeetupsController.createMeetup
+);
+meetupsRouter.get(
+  "/search",
+  validateRequestProperty("query", FullTextSearchSchema),
+  MeetupsController.getPageOfMeetups
 );
 meetupsRouter.get(
   "/:id",
