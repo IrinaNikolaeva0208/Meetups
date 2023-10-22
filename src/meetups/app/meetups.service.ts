@@ -7,7 +7,7 @@ import meetupsIndex from "./meetups.index";
 
 class MeetupsService {
   async getPage(queryParams: Record<string, string>) {
-    const paginationOptions = formPaginationOptions(queryParams);
+    const paginationOptions = await formPaginationOptions(queryParams);
 
     const results = await meetupsIndex.findMany(paginationOptions);
 

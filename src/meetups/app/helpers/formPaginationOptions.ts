@@ -8,8 +8,13 @@ import {
   formSort,
   formTime,
 } from "./optsFunctions";
+import { fixMeetupsMapping } from "./fixMeetupMappings";
 
-export function formPaginationOptions(queryObject: Record<string, string>) {
+let fixedMappings = false;
+
+export async function formPaginationOptions(
+  queryObject: Record<string, string>
+) {
   const {
     offset,
     limit,
@@ -40,6 +45,10 @@ export function formPaginationOptions(queryObject: Record<string, string>) {
     };
 
     if (sort) {
+      if (!fixedMappings) {
+        await fixMeetupsMapping();
+        fixedMappings = true;
+      }
       formSort(paginationOptions, sort, order || "asc");
     }
 
@@ -65,8 +74,6 @@ export function formPaginationOptions(queryObject: Record<string, string>) {
 
     if (queryHasParamsForSearch) paginationOptions.query = query;
   }
-
-  console.log(paginationOptions);
 
   return paginationOptions;
 }
