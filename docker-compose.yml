@@ -23,6 +23,7 @@ services:
     restart: always
     networks:
       - app-network
+      - elastic
     ports:
       - "${MEETUPS_PORT}:${MEETUPS_PORT}"
     depends_on:

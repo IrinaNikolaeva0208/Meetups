@@ -3,23 +3,20 @@ import { NotFoundError, BadRequestError } from "@utils/errors";
 import { CreateMeetupBody } from "./interfaces";
 import { formPaginationOptions } from "./helpers/formPaginationOptions";
 import { channel } from "./rabbitmq";
+import meetupsIndex from "./meetups.index";
 
 class MeetupsService {
   async getPage(queryParams: Record<string, string>) {
     const paginationOptions = formPaginationOptions(queryParams);
 
-    const results = await meetupsRepository.findMany(
-      paginationOptions.filter + " " + paginationOptions.sort,
-      +queryParams.limit,
-      +queryParams.offset
-    );
+    const results = await meetupsIndex.findMany(paginationOptions);
+
+    const queryFilter = { query: paginationOptions.query };
 
     return {
       data: results,
       pagination: {
-        total: await meetupsRepository.getNumberOfFiltered(
-          paginationOptions.filter || ""
-        ),
+        total: await meetupsIndex.getNumberOfFiltered(queryFilter),
         ...queryParams,
       },
     };
@@ -33,7 +30,7 @@ class MeetupsService {
     while (!userId) userId = await channel.get("result.user", { noAck: false });
     userId = JSON.parse(userId.content.toString()).id;
 
-    if (meetupToSignUp.users.find((item) => item && item == userId))
+    if (meetupToSignUp.users.find((item) => item.userId == userId))
       throw BadRequestError("Already signed up");
 
     return await meetupsRepository.relateById(meetupId, userId);
@@ -44,13 +41,9 @@ class MeetupsService {
     await meetupsRepository.deleteById(id);
   }
 
-  async updateById(id: string, body) {
+  async updateById(id: string, body: Partial<CreateMeetupBody>) {
     const meetupToUpdate = await this.getById(id);
-
-    const data = { ...meetupToUpdate, ...body };
-    data.time = new Date(data.time).toISOString();
-
-    return await meetupsRepository.updateById(id, data);
+    return await meetupsRepository.updateById(id, body);
   }
 
   async getById(id: string) {

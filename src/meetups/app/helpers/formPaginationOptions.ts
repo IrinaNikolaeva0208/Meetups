@@ -1,33 +1,91 @@
 import { BadRequestError } from "@utils/errors";
+import { getScriptForGeoFilter } from "./getScriptForGeoFilter";
+import { ElasticOptions, ElasticQuery } from "../interfaces";
 
 export function formPaginationOptions(queryObject: Record<string, string>) {
-  const { sort, order, time, longtitude, latitude, tags, search } = queryObject;
+  const {
+    offset,
+    limit,
+    sort,
+    order,
+    time,
+    longtitude,
+    latitude,
+    tags,
+    search,
+  } = queryObject;
 
   if ((longtitude && !latitude) || (latitude && !longtitude))
     throw BadRequestError("Both latitude and longtitude required");
 
-  const filter = [];
-
-  if (time || tags || search || latitude) {
-    if (time) filter.push(`time = '${time}'`);
-    if (search) filter.push(`name LIKE '${search}%'`);
-    if (tags) {
-      const tagsForRequest = tags
-        .split(",")
-        .map((item) => `'${item}'`)
-        .join(",");
-      filter.push(`ARRAY[${tagsForRequest}] <@ tags`);
-    }
-    if (latitude)
-      filter.push(`longtitude = ${longtitude} AND latitude = ${latitude}`);
-  }
-
-  let paginationOptions = {
-    filter: filter.length ? "WHERE " + filter.join(" AND ") : "",
-    sort: sort ? `ORDER BY ${sort} ${order || "ASC"}` : "",
+  const query: ElasticQuery = {
+    bool: {},
   };
 
-  console.log(paginationOptions);
+  let paginationOptions: ElasticOptions = {
+    from: +offset,
+    size: +limit,
+  };
 
+  let queryHasParamsForSearch = false;
+
+  if (sort) {
+    paginationOptions.sort = [];
+    let sortOpts: { [k: string]: any } = {};
+    sortOpts[sort] = {
+      order: order || "asc",
+    };
+
+    paginationOptions.sort.push({ ...sortOpts });
+  }
+
+  if (latitude) {
+    queryHasParamsForSearch = true;
+    query.bool.filter = [];
+    query.bool.filter.push({
+      script: {
+        script: getScriptForGeoFilter(longtitude, latitude),
+      },
+    });
+  }
+
+  if (time) {
+    queryHasParamsForSearch = true;
+
+    if (!query.bool.must)
+      query.bool.must = {
+        match: {
+          time: new Date(time).toISOString(),
+        },
+      };
+    else query.bool.must.match = { time: new Date(time).toISOString() };
+  }
+
+  if (search) {
+    queryHasParamsForSearch = true;
+
+    if (!query.bool.must)
+      query.bool.must = {
+        match: {
+          name: search,
+        },
+      };
+    else if (!query.bool.must.match) query.bool.must.match = { name: search };
+    else query.bool.must.match.name = search;
+  }
+
+  if (tags) {
+    queryHasParamsForSearch = true;
+    if (!query.bool.filter) query.bool.filter = [];
+
+    tags.split(",").forEach((item) => {
+      const term = {
+        tags: item,
+      };
+      query.bool.filter.push({ term });
+    });
+  }
+
+  if (queryHasParamsForSearch) paginationOptions.query = query;
   return paginationOptions;
 }

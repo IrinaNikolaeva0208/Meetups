@@ -1,11 +1,8 @@
-import { PaginationFilter } from "./paginationFilter";
+import { ElasticQuery } from "./elasticQuery";
 
-export interface paginationOptions extends PaginationFilter {
-  skip: number;
-  take: number;
-  orderBy: {
-    name?: "asc" | "desc";
-    time?: "asc" | "desc";
-    place?: "asc" | "desc";
-  };
+export interface ElasticOptions {
+  from: number;
+  size: number;
+  sort?: any[];
+  query?: ElasticQuery;
 }
