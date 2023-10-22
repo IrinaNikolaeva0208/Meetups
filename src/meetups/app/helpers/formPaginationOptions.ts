@@ -3,17 +3,8 @@ import { getScriptForGeoFilter } from "./getScriptForGeoFilter";
 import { ElasticOptions, ElasticQuery } from "../interfaces";
 
 export function formPaginationOptions(queryObject: Record<string, string>) {
-  const {
-    offset,
-    limit,
-    sort,
-    order,
-    time,
-    longtitude,
-    latitude,
-    tags,
-    search,
-  } = queryObject;
+  const { offset, limit, sort, order, time, longtitude, latitude, tags, name } =
+    queryObject;
 
   if ((longtitude && !latitude) || (latitude && !longtitude))
     throw BadRequestError("Both latitude and longtitude required");
@@ -61,17 +52,17 @@ export function formPaginationOptions(queryObject: Record<string, string>) {
     else query.bool.must.match = { time: new Date(time).toISOString() };
   }
 
-  if (search) {
+  if (name) {
     queryHasParamsForSearch = true;
 
     if (!query.bool.must)
       query.bool.must = {
         match: {
-          name: search,
+          name,
         },
       };
-    else if (!query.bool.must.match) query.bool.must.match = { name: search };
-    else query.bool.must.match.name = search;
+    else if (!query.bool.must.match) query.bool.must.match = { name };
+    else query.bool.must.match.name = name;
   }
 
   if (tags) {
