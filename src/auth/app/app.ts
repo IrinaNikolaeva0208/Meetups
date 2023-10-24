@@ -6,7 +6,7 @@ import authRouter from "./auth.router";
 import cookieParser from "cookie-parser";
 import { handleErrors, sendErrorInCaseOfWrongRoute } from "@utils/middleware";
 import "./rabbitmq";
-import profileRouter from "./profile.router";
+import profileRouter from "./profile/profile.router";
 import { hasValidAccessToken } from "./middleware";
 
 const PORT = envVars.AUTH_PORT;

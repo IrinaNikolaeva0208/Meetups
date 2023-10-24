@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { validateRequestProperty } from "@utils/middleware";
 import { ProfileController } from "./profile.controller";
-import { UpdateProfileSchema, UploadPhotoSchema } from "./schemas";
-import { upload } from "./multer";
+import { UpdateProfileSchema, UploadPhotoSchema } from "../schemas";
+import { upload } from "../multer";
 
 const profileRouter = Router();
 
