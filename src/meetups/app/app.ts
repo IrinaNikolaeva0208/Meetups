@@ -7,11 +7,13 @@ import cookieParser from "cookie-parser";
 import { handleErrors, sendErrorInCaseOfWrongRoute } from "@utils/middleware";
 import "./rabbitmq";
 import { isAuthenticated } from "./middleware";
+import cors from "cors";
 
 const PORT = envVars.MEETUPS_PORT;
 
 const meetupsApp = express();
 
+meetupsApp.use(cors());
 meetupsApp.use(express.json());
 meetupsApp.use(cookieParser());
 meetupsApp.use("/", isAuthenticated, meetupsRouter);

@@ -8,11 +8,13 @@ import { handleErrors, sendErrorInCaseOfWrongRoute } from "@utils/middleware";
 import "./rabbitmq";
 import profileRouter from "./profile/profile.router";
 import { hasValidAccessToken } from "./middleware";
+import cors from "cors";
 
 const PORT = envVars.AUTH_PORT;
 
 const authApp = express();
 
+authApp.use(cors());
 authApp.use(express.json());
 authApp.use(cookieParser());
 authApp.use("/auth", authRouter);
