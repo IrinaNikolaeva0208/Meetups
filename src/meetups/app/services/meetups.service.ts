@@ -1,9 +1,9 @@
-import meetupsRepository from "./meetups.repository";
+import meetupsRepository from "../meetups.repository";
 import { NotFoundError, BadRequestError } from "@utils/errors";
-import { CreateMeetupBody } from "./interfaces";
-import { formPaginationOptions } from "./helpers/formPaginationOptions";
-import { channel } from "./rabbitmq";
-import meetupsIndex from "./meetups.index";
+import { CreateMeetupBody } from "../interfaces";
+import { formPaginationOptions } from "../helpers/formPaginationOptions";
+import { channel } from "../rabbitmq";
+import meetupsIndex from "../meetups.index";
 
 class MeetupsService {
   async getPage(queryParams: Record<string, string>) {
