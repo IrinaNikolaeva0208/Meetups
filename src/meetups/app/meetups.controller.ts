@@ -1,4 +1,5 @@
 import meetupsService from "./meetups.service";
+import reportsService from "./reports.service";
 import { NextFunction, Request, Response } from "express";
 
 export class MeetupsController {
@@ -67,7 +68,33 @@ export class MeetupsController {
     let updatedMeetup;
     try {
       updatedMeetup = await meetupsService.deleteById(req.params.id);
-      res.status(204).json(updatedMeetup);
+      res.status(200).json(updatedMeetup);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  static async generateCsvMeetupsList(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      await reportsService.generateCsvList(req.query.url as string);
+      res.status(201).json({ message: "Successfully created" });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  static async generatePdfMeetupsListTemplate(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      await reportsService.generatePdfTemplate(req.query.url as string);
+      res.status(201).json({ message: "Successfully created" });
     } catch (err) {
       next(err);
     }

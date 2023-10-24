@@ -6,6 +6,7 @@ import {
   UpdateMeetupSchema,
   PaginationQueryParamsSchema,
   FullTextSearchSchema,
+  ReportQuerySchema,
 } from "./schemas";
 import { Roles } from "@utils/interfaces/roles.enum";
 import { MeetupsController } from "./meetups.controller";
@@ -51,6 +52,16 @@ meetupsRouter.post(
   "/signup/:id",
   validateRequestProperty("params", MeetupIdSchema),
   MeetupsController.signUpForMeetup
+);
+meetupsRouter.post(
+  "/csv_list",
+  validateRequestProperty("query", ReportQuerySchema),
+  MeetupsController.generateCsvMeetupsList
+);
+meetupsRouter.post(
+  "/pdf_template",
+  validateRequestProperty("query", ReportQuerySchema),
+  MeetupsController.generatePdfMeetupsListTemplate
 );
 
 export default meetupsRouter;
