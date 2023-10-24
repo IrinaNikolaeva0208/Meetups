@@ -1,5 +1,5 @@
-import meetupsService from "./meetups.service";
-import reportsService from "./reports.service";
+import meetupsService from "./services/meetups.service";
+import reportsService from "./services/reports.service";
 import { NextFunction, Request, Response } from "express";
 
 export class MeetupsController {
