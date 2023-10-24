@@ -86,4 +86,17 @@ export class MeetupsController {
       next(err);
     }
   }
+
+  static async generatePdfMeetupsListTemplate(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      await reportsService.generatePdfTemplate(req.query.url as string);
+      res.status(201).json({ message: "Successfully created" });
+    } catch (err) {
+      next(err);
+    }
+  }
 }
